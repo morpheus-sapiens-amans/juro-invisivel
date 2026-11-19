@@ -38,8 +38,20 @@ vivo.
 Baixe a pasta inteira, abra com uma IA que leia arquivos (Claude, ChatGPT, Cursor…) e
 pergunte. O arquivo **[`COMECE-AQUI.md`](COMECE-AQUI.md)** te ensina como, com perguntas
 de partida. Há um arquivo-guia (`CLAUDE.md` / `AGENTS.md`) que instrui a IA a ser um
-**tutor honesto** — explicar o meu raciocínio, o do Dejanir, e sempre separar *o que é
-robusto do que é aposta*.
+**tutor honesto** — explicar o raciocínio de cada autor (o meu, o do Dejanir, o da Lara
+Resende, o das várias escolas) na terceira pessoa, confrontar com quem discorda, e sempre
+separar *o que é robusto do que é aposta*.
+
+### 4. Virar economista de bancada (rodar os modelos você mesmo)
+Isto aqui não é só para ler — é um **laboratório**. Você pode:
+- **Rodar os modelos em Python** (pasta `modelos/`): mude os parâmetros, faça as suas
+  perguntas, tire as suas conclusões. Precisa de Python 3 (`pip install numpy matplotlib`).
+- **Abrir o modelo no Minsky** e dar *play*, vendo o diagrama rodar com gráficos em tempo
+  real — exatamente como eu faço. O passo a passo está em
+  [`INSTALAR-MINSKY.md`](INSTALAR-MINSKY.md).
+
+Você tem o direito de **apertar o play e ver funcionando**, e de discordar com base nas
+suas próprias contas.
 
 ---
 
@@ -72,7 +84,8 @@ Leia o confronto completo em
 |---|---|
 | [`dashboard/`](dashboard/) | O painel interativo (abre no navegador) |
 | [`relatorios/`](relatorios/) | O Juro Invisível + o confronto com o Dejanir + resumos técnicos |
-| [`modelos/`](modelos/) | Código rodável: `brasil_sfc.py`, `dejanir_model.py`, `cross_run.py` |
+| [`modelos/`](modelos/) | O laboratório em Python: o modelo do Brasil, o do Dejanir, a comparação, e os experimentos que geram as figuras |
+| [`modelo-minsky/`](modelo-minsky/) | O modelo em **Minsky** (`.mky`) — abra e dê *play* (veja [`INSTALAR-MINSKY.md`](INSTALAR-MINSKY.md)) |
 | [`dados-e-fontes/`](dados-e-fontes/) | Bibliografia e um dicionário de economia para leigos |
 
 ---

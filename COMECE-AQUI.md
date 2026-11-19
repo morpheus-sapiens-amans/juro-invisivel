@@ -29,19 +29,36 @@ rodando ali, na sua tela).
    onde isto é frágil?"*
 
 ## Nível 3 — rodar os modelos você mesmo (precisa de Python)
-Os modelos são as **contas de verdade** por trás de tudo. Com Python 3 e `numpy`
-instalados:
+Os modelos são as **contas de verdade** por trás de tudo. Instale o Python 3 e as
+bibliotecas (`pip install numpy matplotlib`) e rode, na pasta `modelos/`:
 
 ```bash
 cd modelos
+
+# o núcleo (só precisa de numpy):
 python3 brasil_sfc.py      # nosso modelo do Brasil (dívida, câmbio, juro)
 python3 dejanir_model.py   # o modelo do Dejanir — reproduz os números do paper dele
 python3 cross_run.py       # roda os dois no MESMO choque e compara lado a lado
+
+# os experimentos que geram as figuras dos relatórios (precisam de matplotlib;
+# salvam em modelos/saida/):
+python3 teste_regime.py    # o teste de dominância fiscal (o câmbio vira de sinal?)
+python3 bateria_teto.py    # teto × arcabouço × revogar: o "pacote do mal"
+python3 escada_carrego.py  # a escada: alternativa direta × pacote completo
+python3 bateria_jones.py   # os cenários do argumento do Jones
 ```
 
-Se os números que aparecem baterem com os dos relatórios, é porque **não tem truque**:
-você está vendo as mesmas contas. Se não baterem, me avise — isso é um erro e eu quero
-saber.
+**A ideia é você mexer.** Abra qualquer arquivo, mude um parâmetro (a Selic, a meta de
+primário, a composição da dívida), rode de novo e veja o que muda. Faça as suas perguntas,
+tire as suas conclusões. Se os números baterem com os dos relatórios, é porque **não tem
+truque** — são as mesmas contas. Se não baterem, me avise: isso é um erro e eu quero saber.
+
+## Nível 4 — abrir o modelo no Minsky e dar play
+Quer ver o modelo **por dentro**, como um diagrama que roda com gráficos em tempo real?
+Esse é o **Minsky**, o programa visual do economista Steve Keen. O passo a passo (baixar o
+Minsky, abrir `modelo-minsky/BrasilSFC-com-plots.mky`, apertar play, mudar parâmetros) está
+em **[`INSTALAR-MINSKY.md`](INSTALAR-MINSKY.md)**. Você tem o direito de apertar o play e
+ver funcionando.
 
 ## Onde está cada coisa
 - Dúvida de palavra ("o que é Selic? o que é prêmio de risco?") →

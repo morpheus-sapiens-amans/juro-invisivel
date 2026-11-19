@@ -6,3 +6,8 @@ __pycache__/
 *.out
 .ipynb_checkpoints/
 .claude/
+
+# figuras geradas pelos scripts do laboratório (cada um gera as suas ao rodar)
+modelos/saida/*
+!modelos/saida/.gitkeep
+modelos/*.png

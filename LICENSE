@@ -21,6 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 ---
-Nota: esta licença MIT cobre o CÓDIGO deste repositório (a pasta `modelos/` e o
-`dashboard/`). Os TEXTOS, relatórios e dados são licenciados sob CC BY 4.0 — ver
+Nota: esta licença MIT cobre o CÓDIGO deste repositório (as pastas `modelos/`,
+`modelo-minsky/` e o `dashboard/`). Os TEXTOS, relatórios e dados são licenciados sob
+CC BY-NC 4.0 (uso não-comercial, com liberação para criadores individuais) — ver
 CONTENT-LICENSE.md.

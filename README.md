@@ -30,9 +30,10 @@ vivo.
 
 ### 2. Ler os relatórios
 - **[O Juro Invisível](relatorios/O-Juro-Invisivel.pdf)** — o relatório principal (PDF).
-- **[Confronto com Dejanir Silva](relatorios/confronto-dejanir-silva.md)** — onde a minha
-  tese dialoga com um paper acadêmico ortodoxo, onde eles concordam, e onde eu estou
-  exposto.
+- **[Diálogo com Lara Resende](relatorios/dialogo-lara-resende.md)** — a tese do "Eu
+  Acuso" (o juro como réu, não o gasto social), onde eu construo com ele e onde vou além.
+- **[Confronto com Dejanir Silva](relatorios/confronto-dejanir-silva.md)** — onde a tese
+  dialoga com um paper acadêmico ortodoxo, onde concordam, e onde eu estou exposto.
 
 ### 3. Conversar com o repositório (via IA)
 Baixe a pasta inteira, abra com uma IA que leia arquivos (Claude, ChatGPT, Cursor…) e
@@ -89,7 +90,7 @@ Leia o confronto completo em
 | Pasta | O que é |
 |---|---|
 | [`dashboard/`](dashboard/) | O painel interativo (abre no navegador) |
-| [`relatorios/`](relatorios/) | O Juro Invisível + o confronto com o Dejanir + resumos técnicos |
+| [`relatorios/`](relatorios/) | O Juro Invisível + o diálogo com Lara Resende + o confronto com o Dejanir + resumos técnicos |
 | [`modelos/`](modelos/) | O laboratório em Python: o modelo do Brasil, o do Dejanir, a comparação, e os experimentos que geram as figuras |
 | [`modelo-minsky/`](modelo-minsky/) | O modelo em **Minsky** (`.mky`) — abra e dê *play* (veja [`INSTALAR-MINSKY.md`](INSTALAR-MINSKY.md)) |
 | [`dados-e-fontes/`](dados-e-fontes/) | Bibliografia e um dicionário de economia para leigos |
@@ -98,14 +99,20 @@ Leia o confronto completo em
 
 ## Licença, crédito e colaboração
 
-Este material é **livre para usar, copiar, remixar e usar em vídeos — inclusive
-comercialmente** — com **uma condição: cite o autor** (Laércio Avelino).
+**Criador individual, educador, YouTuber — mesmo monetizado — está liberado:** use, cite,
+remixe em vídeos, posts e aulas. A única condição é **citar o autor** (Laércio Avelino).
 
-- **Textos, relatórios e dados:** [CC BY 4.0](CONTENT-LICENSE.md).
-- **Código (`modelos/`, dashboard):** [MIT](LICENSE).
+- **Textos, relatórios e dados:** [CC BY-NC 4.0](CONTENT-LICENSE.md), com liberação
+  expressa para criadores individuais (inclusive monetizados).
+- **Código (`modelos/`, `modelo-minsky/`, `dashboard/`):** [MIT](LICENSE) — livre para tudo.
 
-Vai fazer um vídeo, um post, uma aula com isto? Ótimo — **me cite** e, se quiser, **me
-chame pra colaborar**: [laercio.avelino@gmail.com](mailto:laercio.avelino@gmail.com).
+**Uso comercial por empresas** (emissoras, veículos, bancos, produtos pagos construídos
+sobre o material) é **reservado — fale comigo antes**. A intenção é simples: *criador
+espalhando, pode; empresa lucrando em cima, fala comigo.* Detalhes em
+[CONTENT-LICENSE.md](CONTENT-LICENSE.md).
+
+Vai fazer um vídeo, um post, uma aula? Ótimo — **me cite** e, se quiser, **me chame pra
+colaborar**: [laercio.avelino@gmail.com](mailto:laercio.avelino@gmail.com).
 
 > *Isto é um trabalho de cidadão, aberto à crítica. Achou um erro? Abra uma issue,
 > me escreva, ou melhor: rode o modelo e me mostre onde a conta não fecha.*

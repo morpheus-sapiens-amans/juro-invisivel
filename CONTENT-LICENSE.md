@@ -1,32 +1,47 @@
-# Licença dos textos e dados — CC BY 4.0
+# Licença dos textos e dados — CC BY-NC 4.0 (com liberação para criadores)
 
 Os **textos, relatórios, figuras e dados** deste repositório (as pastas `relatorios/` e
 `dados-e-fontes/`, e os arquivos `.md` da raiz) são licenciados sob a
 
-**Creative Commons Attribution 4.0 International (CC BY 4.0)**
-https://creativecommons.org/licenses/by/4.0/deed.pt_BR
+**Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)**
+https://creativecommons.org/licenses/by-nc/4.0/deed.pt_BR
 
-## O que você PODE fazer
+## O que você PODE fazer livremente
 - **Compartilhar** — copiar e redistribuir em qualquer meio ou formato.
 - **Adaptar** — remixar, transformar e criar a partir do material.
-- **Para qualquer fim**, inclusive **comercial** (vídeos monetizados, aulas pagas, etc.).
 
-## A única condição: **atribuição**
-Você precisa **dar o crédito ao autor** (Laércio Avelino), colocar um link para este
-material e indicar se fez mudanças. Pode fazer isso de qualquer forma razoável, mas não de
-um jeito que sugira que o autor endossa você ou seu uso.
-
-**Exemplo de crédito:**
+Desde que, em ambos os casos, você **dê o crédito** ao autor (Laércio Avelino), com um link
+para este material, e indique se fez mudanças. **Exemplo de crédito:**
 > Baseado em "O Juro Invisível — uma conversa sensata com o ajuste fiscal", de Laércio
-> Avelino, licenciado sob CC BY 4.0.
+> Avelino, licenciado sob CC BY-NC 4.0.
 
-## Convite (não é obrigação)
-Vai fazer um vídeo ou conteúdo com isto? Além de citar, se quiser, **me chame para
-colaborar**: laercio.avelino@gmail.com. Fico feliz em participar.
+## A condição: não-comercial — com UMA liberação importante
+
+A licença **CC BY-NC** reserva o **uso comercial**. Mas, para que o material circule e fure
+bolha, o autor concede expressamente:
+
+> **Criadores individuais e educadores estão liberados** para usar, citar e remixar este
+> material em **vídeos, posts, aulas e canais — inclusive monetizados** — desde que citem o
+> autor. Isso não é considerado "uso comercial" para os fins desta liberação.
+
+**O que continua reservado (fale com o autor antes):**
+- Uso por **empresas** e organizações com fins lucrativos (emissoras, veículos de mídia,
+  bancos, consultorias) como parte de produto ou serviço;
+- **Produtos pagos** construídos sobre este material (cursos "fechados", livros à venda,
+  software comercial que o embuta);
+- Qualquer **redistribuição comercial** do material como mercadoria.
+
+Para esses casos, **entre em contato**: o autor pode autorizar, negociar condições ou
+convidar para colaboração. **laercio.avelino@gmail.com**
+
+> Em caso de dúvida se o seu uso é "comercial" no sentido reservado, pergunte. A intenção é
+> simples: criador espalhando, **pode**; empresa lucrando em cima, **fale comigo**.
 
 ---
-**Observação:** o paper de Dejanir Silva *não* está incluído neste repositório e **não**
-é coberto por esta licença — é obra dele, com direitos próprios. A nossa análise do paper
-(resumos e confronto) é nossa e entra no CC BY; o paper original deve ser acessado na
-página do autor (link em `relatorios/confronto-dejanir-silva.md`). O **código** está sob
-MIT (ver `LICENSE`).
+**Observações:**
+- O **código** (pastas `modelos/`, `modelo-minsky/` e o `dashboard/`) está sob **MIT** (ver
+  `LICENSE`) — livre inclusive para uso comercial, pois existe para ser rodado e forkado.
+- O paper de Dejanir Silva **não** está incluído neste repositório e **não** é coberto por
+  esta licença — é obra dele, com direitos próprios. Nossa análise do paper (resumos e
+  confronto) é nossa e entra no CC BY-NC; o paper original deve ser acessado na página do
+  autor (link em `relatorios/confronto-dejanir-silva.md`).

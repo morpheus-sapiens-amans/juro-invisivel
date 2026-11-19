@@ -98,15 +98,17 @@ e que o caminho sólido é o ajuste pelo topo.**
   8 abas: as seis escolas, o BrasilSFC ("quem paga?"), a Bifurcação 2034, a proposta,
   reindustrialização, Jones, a lente **Neo-Fisher · Dejanir** (o modelo dele rodando), e
   o Veredito com a escada de robustez.
-- `relatorios/` — "O Juro Invisível" (PDF + markdown) e o **confronto com o Dejanir**
-  (`confronto-dejanir-silva.md`), mais o resumo técnico do paper dele e o mapa do nosso
-  modelo.
+- `relatorios/` — "O Juro Invisível" (PDF + markdown); o **diálogo com Lara Resende**
+  (`dialogo-lara-resende.md`, a tese do "Eu Acuso" em terceira pessoa + onde o Laércio vai
+  além); o **confronto com o Dejanir** (`confronto-dejanir-silva.md`); mais o resumo técnico
+  do paper dele e o mapa do nosso modelo.
 - `modelos/` — o **laboratório rodável** em Python. Núcleo: `brasil_sfc.py` (nosso modelo
   stock-flow consistent). `dejanir_model.py` (port fiel do modelo da Seção 5 do Dejanir,
   reproduz os números do paper até a casa decimal) e `cross_run.py` (roda os dois no mesmo
   choque e compara). Mais os experimentos que geram as figuras dos relatórios
-  (`teste_regime.py`, `bateria_teto.py`, `escada_carrego.py`, `bateria_jones.py`,
-  `selic_fases.py`, `cambio.py`, `keen_model.py`) — salvam em `modelos/saida/`. E os
+  (`tese_lara_resende.py` — a tese do "Eu Acuso" rodável, `teste_regime.py`,
+  `bateria_teto.py`, `escada_carrego.py`, `bateria_jones.py`, `selic_fases.py`, `cambio.py`,
+  `keen_model.py`) — salvam em `modelos/saida/`. E os
   scripts que constroem o modelo Minsky (`build_brasil_mky.py`, `cenarios_mky.py`,
   `add_plots.py`) — estes precisam de `pyminsky`. Convide a pessoa a **mudar parâmetros e
   rodar**: é o laboratório dela.

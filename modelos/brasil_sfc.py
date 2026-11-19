@@ -55,6 +55,9 @@ PARS = dict(
     #   teto (EC 95/2016): gasto real congelado (teto cresce 0% real → G/PIB despenca).
     #   arcabouço (LC 200/2023): teto cresce 70% da alta real da receita, travado em 0,6–2,5%/ano.
     arc_frac=0.70, arc_min=0.006, arc_max=0.025,
+    # [taylor] regra de Taylor opcional (Selic endógena) — alavanca DESLIGADA por padrão.
+    # alvo = rn + meta + phi_pi·(infl−meta) + phi_y·(λ−0,95); params da ortodoxia (relatório 1).
+    taylor_rn=0.06, taylor_pi_meta=0.03, taylor_phi_pi=2.0, taylor_phi_y=0.5, taylor_speed=1.5,
 )
 
 
@@ -68,7 +71,7 @@ def _clamp_banda(gap, banda):
 def simula(Selic, R0=0.15, accum0=0.004, cap_arcabouco=1.00, T=40.0, dt=0.01, p=None,
            tax_rich=0.0, invest_pub=0.0, tau_fric=0.0,
            phi_endog=False, conta_carrego=False, regra_divida=False, b0=0.78,
-           regime_gasto=None, every=5.0):
+           regime_gasto=None, every=5.0, taylor=False, ajuste=0.0, corte_G=0.0, ramp_anos=0.0):
     """Integra o sistema. Selic é o botão de política. R0=reservas/PIB iniciais;
     accum0=formação exógena de reservas/PIB (venda de ativos, ouro); cap_arcabouco=teto
     (1.00 = gasto não passa da receita). Retorna lista de snapshots.
@@ -93,6 +96,7 @@ def simula(Selic, R0=0.15, accum0=0.004, cap_arcabouco=1.00, T=40.0, dt=0.01, p=
     """
     p = {**PARS, **(p or {})}
     g = p.__getitem__
+    Sel = Selic                                         # taxa de política corrente (endógena se taylor=True)
     # estados: núcleo real + dívida(ratio) + externo
     K, a, N, w = 300.0, 1.0, 100.0, 1.0
     D_priv, b, R, D_ext, e = 0.0, b0, R0, 0.10, 1.0
@@ -103,6 +107,7 @@ def simula(Selic, R0=0.15, accum0=0.004, cap_arcabouco=1.00, T=40.0, dt=0.01, p=
     hist = []
     for i in range(int(T / dt)):
         Y = K / g('v'); L = Y / a; lam = L / N; Wages = w * L
+        rm = min(1.0, (i * dt) / ramp_anos) if ramp_anos > 0 else 1.0  # [ramp] rampa o ajuste/corte em ramp_anos
         # --- fiscal + arcabouço/regra + alavancas tax_rich e invest_pub ---
         tax = (g('tau') + tax_rich) * Y                   # tax_rich = primário extra do topo (PSOL)
         G_Fn = genexp(lam, g('x_g'), g('s_g'), g('min_g'), g('y_g'))
@@ -118,10 +123,11 @@ def simula(Selic, R0=0.15, accum0=0.004, cap_arcabouco=1.00, T=40.0, dt=0.01, p=
             G = G_des
         else:
             G = min(G_des, cap_arcabouco * tax)           # clamp legado (reproduz A/B/B±/C)
+        G = max(G - corte_G * rm * Y, 0.0)                 # [corte_G] corte de gasto (piso social): melhora o primário, drena demanda e gsy
         pb_ratio = (tax - G) / Y                           # superávit primário / PIB
         NetGovInj = G - tax                                # injeção primária no privado
         # --- privado (Keen) ---
-        r_priv = Selic + g('spread_priv')
+        r_priv = Sel + g('spread_priv')
         Profit = Y - Wages - r_priv * D_priv + NetGovInj
         pi = Profit / K
         Inv = genexp(pi, g('x_i'), g('s_i'), g('min_i'), g('y_i')) * Y
@@ -133,12 +139,12 @@ def simula(Selic, R0=0.15, accum0=0.004, cap_arcabouco=1.00, T=40.0, dt=0.01, p=
         g_nom = g_real + infl
         # --- dívida pública: o loop juro→déficit do ALR (custo médio das 3 pernas) ---
         # 47% LFT segue a Selic; 26% pré; 27% NTN-B = IPCA + cupom real → 74% indexada.
-        r_gov = (g('theta') * Selic + g('theta_pre') * g('r_pre')
+        r_gov = (g('theta') * Sel + g('theta_pre') * g('r_pre')
                  + g('theta_ipca') * (infl + g('cupom_real')))
         # [carrego] custo quase-fiscal do carry das reservas = (Selic-ret-deprec)·R, soma ao déficit.
         # Reservas em dólar: a depreciação (ganho em R$) ABATE o custo → por isso entra com sinal −.
-        carrego = max(Selic - g('ret_reservas') - prev_deprec, 0.0) * R if conta_carrego else 0.0
-        pb_eff = pb_ratio - carrego                        # carrego piora o resultado efetivo
+        carrego = max(Sel - g('ret_reservas') - prev_deprec, 0.0) * R if conta_carrego else 0.0
+        pb_eff = pb_ratio - carrego + ajuste * rm          # carrego piora; [ajuste] = esforço primário exógeno (caso de teste)
         db = (r_gov - g_nom) * b - pb_eff
         # --- setor externo + reservas ---
         # [phi-endóg] prêmio de risco endógeno: liga acima do limiar de dominância b_dom.
@@ -153,7 +159,7 @@ def simula(Selic, R0=0.15, accum0=0.004, cap_arcabouco=1.00, T=40.0, dt=0.01, p=
         M = g('m0e') * ((Y / 100.0) ** g('eta_m')) * (ee ** (-g('eps_m')))
         TB = X - M
         CA = TB - g('r_world') * D_ext
-        carry = Selic - g('r_world') - risk_eff - infl     # carry REAL (com prêmio endógeno)
+        carry = Sel - g('r_world') - risk_eff - infl     # carry REAL (com prêmio endógeno)
         KA = kappa_eff * carry * Y
         BP = CA + KA + accum0 * Y                           # balanço de pagamentos + formação
         if BP >= 0:                                         # entrada líquida → reservas formam
@@ -181,6 +187,12 @@ def simula(Selic, R0=0.15, accum0=0.004, cap_arcabouco=1.00, T=40.0, dt=0.01, p=
         R += dR * dt; D_ext += dD_ext * dt; e += de * dt
         Yworld += g('g_world') * Yworld * dt
         prev_deprec = de / ee                              # taxa de depreciação p/ o carrego do passo seguinte
+        if taylor:                                          # [taylor] Selic endógena: o BC segue uma regra
+            sel_alvo = (g('taylor_rn') + g('taylor_pi_meta')
+                        + g('taylor_phi_pi') * (infl - g('taylor_pi_meta'))
+                        + g('taylor_phi_y') * (lam - 0.95))
+            Sel += g('taylor_speed') * (sel_alvo - Sel) * dt
+            Sel = max(Sel, 0.0)                             # piso em zero
         # [regime_gasto] evolui o teto de gasto (em %PIB). O teto é um NÍVEL real; dividido por um
         # PIB que cresce a g_real, a razão G/PIB cai. Teto (EC95): nível real cresce 0% → cai rápido.
         # Arcabouço (LC200): nível cresce arc_frac·receita, travado na banda → cai devagar (austeridade
@@ -192,7 +204,7 @@ def simula(Selic, R0=0.15, accum0=0.004, cap_arcabouco=1.00, T=40.0, dt=0.01, p=
             gc += (r_arc - g_real) * gc * dt
         g_real_lag = g_real
         if i % max(1, int(every / dt)) == 0:
-            hist.append(dict(t=i * dt, b=b, rg=r_gov - g_nom, cambio=e, R=R,
+            hist.append(dict(t=i * dt, b=b, rg=r_gov - g_nom, cambio=e, R=R, selic=Sel,
                              infl=infl, g_nom=g_nom, lam=lam, pi=pi,
                              carrego=carrego, risk=risk_eff, pb=pb_ratio, gr=g_real,
                              gsy=G / Y, taxy=tax / Y, Y=Y, K=K, omega=Wages / Y))

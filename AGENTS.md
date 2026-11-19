@@ -28,6 +28,13 @@ acredite no autor, interrogue o modelo.*
   o teto/arcabouço, e reindustrializar via investimento público. As reservas/ouro são
   **ferramenta de transição** (suavizam o câmbio no susto), *não* um baixador estrutural
   do juro real.
+- **A síntese (o fio condutor de todo o trabalho):** *nenhuma peça isolada se sustenta.*
+  O corte da Selic do Lara Resende sozinho é aposta no regime e salto abrupto; o "revogar o
+  teto" de Jones Manoel sozinho é o PIOR cenário do modelo (dívida e câmbio disparam). Foi
+  só **combinando os dois** — ancorar pela via distributiva (de Jones) *e* cortar o juro
+  gradualmente com defesas (de LR) — que o modelo controlou dívida e câmbio ao mesmo tempo.
+  Quando a conversa for sobre "a proposta", este é o coração: a jornada em
+  `relatorios/a-virada-lr-mais-jones.md`.
 
 ## O método: como falar de QUALQUER autor (não só o Dejanir)
 
@@ -98,20 +105,23 @@ e que o caminho sólido é o ajuste pelo topo.**
   8 abas: as seis escolas, o BrasilSFC ("quem paga?"), a Bifurcação 2034, a proposta,
   reindustrialização, Jones, a lente **Neo-Fisher · Dejanir** (o modelo dele rodando), e
   o Veredito com a escada de robustez.
-- `relatorios/` — "O Juro Invisível" (PDF + markdown); o **diálogo com Lara Resende**
-  (`dialogo-lara-resende.md`, a tese do "Eu Acuso" em terceira pessoa + onde o Laércio vai
-  além); o **confronto com o Dejanir** (`confronto-dejanir-silva.md`); mais o resumo técnico
-  do paper dele e o mapa do nosso modelo.
+- `relatorios/` — "O Juro Invisível" (PDF + markdown); os diálogos: **Lara Resende**
+  (`dialogo-lara-resende.md`, a tese do "Eu Acuso") e **Jones Manoel** (`dialogo-jones.md`,
+  por que o governo não enfrenta o mercado); **a virada** (`a-virada-lr-mais-jones.md`, por
+  que nenhuma peça sozinha fecha e só LR+Jones funciona — este é o fio condutor do
+  trabalho); o **confronto com o Dejanir** (`confronto-dejanir-silva.md`); mais o resumo
+  técnico do paper dele e o mapa do nosso modelo.
 - `modelos/` — o **laboratório rodável** em Python. Núcleo: `brasil_sfc.py` (nosso modelo
   stock-flow consistent). `dejanir_model.py` (port fiel do modelo da Seção 5 do Dejanir,
   reproduz os números do paper até a casa decimal) e `cross_run.py` (roda os dois no mesmo
   choque e compara). Mais os experimentos que geram as figuras dos relatórios
   (`tese_lara_resende.py` — a tese do "Eu Acuso" rodável, `teste_regime.py`,
   `bateria_teto.py`, `escada_carrego.py`, `bateria_jones.py`, `selic_fases.py`, `cambio.py`,
-  `keen_model.py`) — salvam em `modelos/saida/`. E os
-  scripts que constroem o modelo Minsky (`build_brasil_mky.py`, `cenarios_mky.py`,
-  `add_plots.py`) — estes precisam de `pyminsky`. Convide a pessoa a **mudar parâmetros e
-  rodar**: é o laboratório dela.
+  `keen_model.py`) — salvam em `modelos/saida/`. A **jornada reproduzível** fica em
+  `modelos/jornada/` (`01_lr_puro` → `02_ouro` → `03_jones_puro` → `04_lr_jones` →
+  `05_escolas`): é a virada em código, cada hipótese um script. E os scripts que constroem o
+  modelo Minsky (`build_brasil_mky.py`, `cenarios_mky.py`, `add_plots.py`) — estes precisam
+  de `pyminsky`. Convide a pessoa a **mudar parâmetros e rodar**: é o laboratório dela.
 - `modelo-minsky/` — o modelo em **Minsky** (`.mky`), a ferramenta visual de dinâmica de
   sistemas do Steve Keen. A pessoa pode **abrir e dar play** para ver o modelo rodando com
   gráficos. Veja `INSTALAR-MINSKY.md` na raiz para instalar o Minsky e abrir o arquivo.

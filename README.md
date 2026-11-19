@@ -32,6 +32,12 @@ vivo.
 - **[O Juro Invisível](relatorios/O-Juro-Invisivel.pdf)** — o relatório principal (PDF).
 - **[Diálogo com Lara Resende](relatorios/dialogo-lara-resende.md)** — a tese do "Eu
   Acuso" (o juro como réu, não o gasto social), onde eu construo com ele e onde vou além.
+- **[Diálogo com Jones Manoel](relatorios/dialogo-jones.md)** — por que o governo não
+  enfrenta o mercado (Kalecki, Anderson), e por que "revogar e largar" sozinho é o pior
+  cenário do modelo.
+- **[A virada: por que só LR + Jones fecha](relatorios/a-virada-lr-mais-jones.md)** — a
+  jornada honesta: nenhuma peça sozinha se sustenta; foi a combinação que fez o modelo
+  funcionar. Com os scripts para você reproduzir.
 - **[Confronto com Dejanir Silva](relatorios/confronto-dejanir-silva.md)** — onde a tese
   dialoga com um paper acadêmico ortodoxo, onde concordam, e onde eu estou exposto.
 
@@ -90,7 +96,7 @@ Leia o confronto completo em
 | Pasta | O que é |
 |---|---|
 | [`dashboard/`](dashboard/) | O painel interativo (abre no navegador) |
-| [`relatorios/`](relatorios/) | O Juro Invisível + o diálogo com Lara Resende + o confronto com o Dejanir + resumos técnicos |
+| [`relatorios/`](relatorios/) | O Juro Invisível + os diálogos (Lara Resende, Jones) + a virada LR+Jones + o confronto com o Dejanir |
 | [`modelos/`](modelos/) | O laboratório em Python: o modelo do Brasil, o do Dejanir, a comparação, e os experimentos que geram as figuras |
 | [`modelo-minsky/`](modelo-minsky/) | O modelo em **Minsky** (`.mky`) — abra e dê *play* (veja [`INSTALAR-MINSKY.md`](INSTALAR-MINSKY.md)) |
 | [`dados-e-fontes/`](dados-e-fontes/) | Bibliografia e um dicionário de economia para leigos |

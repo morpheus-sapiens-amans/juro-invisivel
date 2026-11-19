@@ -1,0 +1,1450 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ajuste fiscal — dashboard</title>
+<style>
+/* ---------- tokens (tema claro) ---------- */
+:root{
+  --bg:#f3f4f2; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --line:#dcddd8;
+  --accent:#14504a; --accent-ink:#ffffff; --a:#2a78d6; --b:#eb6834;
+  --display:"IBM Plex Sans Condensed","Arial Narrow",sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  /* status (só para o Veredito — nunca para séries) */
+  --ok:#2e7d57; --cond:#b9922a; --frag:#c0532c; --prem:#6a5aa6;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111211; --surface:#1a1a19; --ink:#f0efec; --ink2:#c3c2b7; --line:#34352f;
+    --accent:#7fd1c5; --accent-ink:#0b0b0b; --a:#3987e5; --b:#d95926; color-scheme:dark;
+    --ok:#6fc49a; --cond:#d9b24e; --frag:#e07a4f; --prem:#a99ce0;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111211; --surface:#1a1a19; --ink:#f0efec; --ink2:#c3c2b7; --line:#34352f;
+  --accent:#7fd1c5; --accent-ink:#0b0b0b; --a:#3987e5; --b:#d95926; color-scheme:dark;
+  --ok:#6fc49a; --cond:#d9b24e; --frag:#e07a4f; --prem:#a99ce0;
+}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45;margin:0}
+main{max-width:980px;margin:0 auto;padding:20px 16px 72px;display:flex;flex-direction:column;gap:20px}
+h1{font-family:var(--display);font-size:1.75rem;line-height:1.1;text-wrap:balance;margin:0}
+h2{font-family:var(--display);font-size:1.15rem;margin:0}
+h3{font-family:var(--display);font-size:1rem;margin:0}
+.lede{color:var(--ink2);max-width:65ch;margin:0}
+a{color:var(--accent)}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;
+      display:flex;flex-direction:column;gap:12px}
+
+/* abas */
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{font:600 .92rem var(--body);background:transparent;border:1px solid var(--line);border-radius:999px;
+     padding:8px 14px;color:var(--ink2);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.panel{display:none;flex-direction:column;gap:20px}
+.panel.on{display:flex}
+
+/* chips de escola */
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font:500 .9rem var(--body);background:var(--surface);border:1px solid var(--line);
+      border-radius:999px;padding:8px 14px;cursor:pointer;color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.who{font-size:.8rem;color:var(--ink2)}
+
+/* números em destaque */
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px}
+.tile .k{font-size:.74rem;color:var(--ink2)}
+.tile .v{font:500 1.3rem var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* legenda */
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:.84rem;color:var(--ink2)}
+.sw{display:inline-block;width:14px;border-top:3px solid var(--a);vertical-align:middle;margin-right:6px}
+.sw.b{border-top:3px dashed var(--b)}
+
+/* grades que quebram no celular */
+.small{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+
+/* sliders */
+.ctl{display:flex;flex-direction:column;gap:3px;margin:6px 0}
+.ctl label{display:flex;justify-content:space-between;font-size:.88rem;gap:10px}
+.ctl output{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.ctl small{color:var(--ink2);font-size:.76rem}
+input[type=range]{width:100%;accent-color:var(--accent)}
+
+.q{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
+.flag{font-size:.76rem;color:var(--ink2);border-left:3px solid var(--cond);padding-left:8px;margin:2px 0}
+
+/* botões utilitários */
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:500 .86rem var(--body);background:var(--surface);border:1px solid var(--line);
+     border-radius:8px;padding:7px 12px;cursor:pointer;color:var(--ink)}
+.btn:hover{border-color:var(--accent)}
+
+/* tabela */
+.twrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font:.82rem var(--mono);font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:5px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{color:var(--ink2);font-weight:500;position:sticky;top:0;background:var(--surface)}
+
+/* barra fixa no rodapé */
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);
+     padding:8px 16px;display:flex;justify-content:center;gap:18px;font:.8rem var(--mono);z-index:5}
+.bar b{font-weight:600}
+
+/* escada de robustez (Veredito) */
+.ladder{display:flex;flex-direction:column;gap:8px}
+.rung{display:grid;grid-template-columns:auto 1fr;gap:12px;border:1px solid var(--line);border-radius:8px;
+      padding:10px 12px;background:var(--surface)}
+.badge{font:600 .72rem var(--body);text-transform:uppercase;letter-spacing:.04em;align-self:start;
+       padding:3px 8px;border-radius:999px;white-space:nowrap}
+.badge.id{background:color-mix(in srgb,var(--ink2) 18%,transparent);color:var(--ink)}
+.badge.ok{background:color-mix(in srgb,var(--ok) 22%,transparent);color:var(--ok)}
+.badge.dir{background:color-mix(in srgb,var(--ok) 14%,transparent);color:var(--ok)}
+.badge.constr{background:color-mix(in srgb,var(--prem) 20%,transparent);color:var(--prem)}
+.badge.cond{background:color-mix(in srgb,var(--cond) 22%,transparent);color:var(--cond)}
+.badge.prem{background:color-mix(in srgb,var(--prem) 22%,transparent);color:var(--prem)}
+.badge.frag{background:color-mix(in srgb,var(--frag) 22%,transparent);color:var(--frag)}
+.rung .claim{font-weight:500}
+.rung .meta{font-size:.8rem;color:var(--ink2);margin-top:3px}
+.rung .meta b{color:var(--ink);font-weight:600}
+
+.stub{border:1px dashed var(--line);border-radius:10px;padding:18px;color:var(--ink2);background:var(--surface)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+svg{display:block;width:100%;height:auto}
+.chart .ttl{font:600 .92rem var(--display)}
+</style>
+</head>
+<body>
+<main>
+  <header style="display:flex;flex-direction:column;gap:8px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+      <h1>O juro, o ajuste e quem paga</h1>
+      <button class="btn" id="theme" title="Alternar tema">◐</button>
+    </div>
+    <p class="lede">Um modelo executável do ajuste fiscal brasileiro. Mexa nas premissas e veja a dívida,
+    o juro e a distribuição se mover. O modelo <b>não escolhe</b> a escola certa — mostra onde cada uma se separa.</p>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-panel="motor1">Motor 1 · seis escolas</button>
+    <button class="tab" role="tab" aria-selected="false" data-panel="motor2">Motor 2 · BrasilSFC</button>
+    <button class="tab" role="tab" aria-selected="false" data-panel="bifurcacao">Bifurcação 2034</button>
+    <button class="tab" role="tab" aria-selected="false" data-panel="proposta">A proposta · a escada</button>
+    <button class="tab" role="tab" aria-selected="false" data-panel="reind">Reindustrialização</button>
+    <button class="tab" role="tab" aria-selected="false" data-panel="jones">Jones no modelo</button>
+    <button class="tab" role="tab" aria-selected="false" data-panel="neofisher">Neo-Fisher · Dejanir</button>
+    <button class="tab" role="tab" aria-selected="false" data-panel="veredito">Veredito</button>
+  </div>
+
+  <!-- ============ MOTOR 1 ============ -->
+  <section class="panel on" id="motor1">
+    <div class="card">
+      <h2>As seis escolas como presets</h2>
+      <p class="lede">Cada botão troca um conjunto de premissas. O esqueleto é o mesmo (IS, Phillips, regra de
+      Taylor, identidade da dívida); muda o que cada escola supõe. Mexer num slider marca "combinação sua".</p>
+      <div class="chips" id="chips"></div>
+      <div class="who" id="who">Escola: <b>Ortodoxia</b></div>
+    </div>
+
+    <div class="tiles" id="tiles"></div>
+
+    <div class="card chart">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+        <h2>Dívida bruta (% do PIB), 2026–2036</h2>
+        <div class="btns"><button class="btn" id="playBtn">▶ Ver ano a ano</button></div>
+      </div>
+      <div class="legend">
+        <span><span class="sw"></span>com ajuste</span>
+        <span><span class="sw b"></span>sem ajuste</span>
+      </div>
+      <div id="mainChart"></div>
+    </div>
+
+    <div class="small" id="smallCharts"></div>
+
+    <div class="card">
+      <h2>Premissas</h2>
+      <div class="btns" style="margin-bottom:4px">
+        <button class="btn" id="copyLink">🔗 Copiar link deste cenário</button>
+        <button class="btn" id="resetBtn">↺ Restaurar valores padrão</button>
+      </div>
+      <div class="groups" id="controls"></div>
+    </div>
+
+    <div class="card">
+      <h2>Ano a ano</h2>
+      <p class="who">A = com ajuste · B = sem ajuste. Dívida, gasto e juros em % do PIB; Selic, IPCA e crescimento em % ao ano.</p>
+      <div class="twrap"><table id="yearTable"></table></div>
+    </div>
+
+    <div class="card">
+      <h2>De onde vem a variação da dívida (2026–2036)</h2>
+      <p class="who">Quanto cada força somou ou tirou da dívida no período, no cenário com ajuste. Em pontos do PIB.</p>
+      <div id="decompChart"></div>
+    </div>
+
+    <div class="card">
+      <h2>O que mais move a dívida de 2036</h2>
+      <p class="who">Mexendo cada premissa p/ cima e p/ baixo (±10% da faixa), o quanto a dívida de 2036 (com ajuste) balança. Ordenado.</p>
+      <div id="tornadoChart"></div>
+    </div>
+
+    <div class="card">
+      <h2>As seis escolas lado a lado</h2>
+      <p class="who">A mesma dívida (com ajuste cheia · sem ajuste tracejada), cada uma na sua escala. O modelo não escolhe qual acerta.</p>
+      <div class="small" id="sixCharts"></div>
+    </div>
+  </section>
+
+  <!-- ============ MOTOR 2 ============ -->
+  <section class="panel" id="motor2">
+    <div class="card">
+      <h2>Quem paga? — de onde vem o dinheiro</h2>
+      <p class="lede">O BrasilSFC tem o que o Motor 1 não enxerga: distribuição. Aqui a <b>meta de primário
+      é a mesma</b> e <b>a Selic é a mesma</b> — a única coisa que muda é <b>de onde se tira o dinheiro</b>.
+      <b>Cobra o topo</b> (os ricos pagam, piso social intacto) × <b>corta o piso</b> (os pobres pagam, o
+      caminho do PLP 299). Mesma meta, destinos opostos. Ao fundo, <b>sem ajuste</b>.</p>
+      <div class="legend">
+        <span><span class="sw" style="border-top-color:var(--a)"></span>cobra o topo (ricos pagam)</span>
+        <span><span class="sw" style="border-top:3px dashed var(--b)"></span>corta o piso (pobres pagam)</span>
+        <span><span class="sw" style="border-top:3px dotted var(--ink2)"></span>sem ajuste</span>
+      </div>
+    </div>
+
+    <div class="twrap card"><table id="m2table"></table></div>
+
+    <div class="small" id="m2charts"></div>
+
+    <div class="card">
+      <h2>Premissas</h2>
+      <div class="btns" style="margin-bottom:4px">
+        <button class="btn" id="m2copy">🔗 Copiar link deste cenário</button>
+        <button class="btn" id="m2reset">↺ Restaurar valores padrão</button>
+      </div>
+      <div class="groups" id="m2controls"></div>
+    </div>
+  </section>
+
+  <!-- ============ BIFURCAÇÃO ============ -->
+  <section class="panel" id="bifurcacao">
+    <div class="card">
+      <h2>Bifurcação 2034 — dois futuros a partir de set/2026</h2>
+      <p class="lede">Mesma meta de primário (1,5% do PIB, rampada em 4 anos). Dois caminhos: o do
+      <b>governo</b> (PLP 299 — aperta o piso, Selic 13,75%) e o do <b>estudo</b> (revogar, topo preserva o
+      piso, Selic 10%), com a <b>referência</b> ao fundo. Leitura em 2030 (4 anos) e 2034 (8 anos).</p>
+      <div class="legend">
+        <span><span class="sw" style="border-top-color:var(--a)"></span>estudo</span>
+        <span><span class="sw" style="border-top:3px dashed var(--b)"></span>governo</span>
+        <span><span class="sw" style="border-top:3px dotted var(--ink2)"></span>referência</span>
+      </div>
+    </div>
+
+    <div class="card chart">
+      <h2>Dívida bruta (% do PIB)</h2>
+      <div id="bifChart"></div>
+    </div>
+
+    <div class="twrap card"><table id="bifTable"></table></div>
+
+    <div class="card">
+      <h3>O que é robusto e o que é aposta</h3>
+      <p class="flag" style="border-color:var(--ok)"><b>Robusto:</b> o juro domina a dívida; a mesma meta
+      pelo topo preserva o piso e termina com dívida menor, câmbio mais apreciado e PIB maior que pelo corte.</p>
+      <p class="flag" style="border-color:var(--prem)"><b>Aposta:</b> que o Brasil esteja em dominância
+      fiscal (o corte da Selic apreciando o Real sai do desenho do modelo, não de prova). Ver o <a href="#"
+      id="toVeredito">Veredito</a>.</p>
+    </div>
+  </section>
+
+  <!-- ============ A PROPOSTA · A ESCADA ============ -->
+  <section class="panel" id="proposta">
+    <div class="card">
+      <h2>A proposta — a escada</h2>
+      <p class="lede">A saída não é <b>um botão</b>, é uma <b>escada com ordem de negociação</b>. Pede-se primeiro o
+      ideal — <b>cobrar do andar de cima</b> (super-ricos, dividendos, renúncias do topo, dívida do agro no BB),
+      revogando o teto e ancorando numa <b>regra de dívida</b> (revogar <i>E</i> ancorar). Só se o Congresso
+      barrar o topo é que se <b>desce ao plano B</b>: cortar a Selic, defendendo o Real com <b>reservas/ouro</b> e
+      fricção cambial. Por cima de qualquer degrau, a <b>reindustrialização</b> (portos + know-how) puxa o
+      crescimento no longo prazo.</p>
+      <div class="legend">
+        <span><span class="sw" style="border-top:3px dashed var(--b)"></span>governo (PLP 299)</span>
+        <span><span class="sw" style="border-top-color:var(--a)"></span>Degrau 1 · alternativa direta (topo paga)</span>
+        <span><span class="sw" style="border-top-color:var(--prem)"></span>Degrau 2 · plano B (cortar a Selic)</span>
+        <span><span class="sw" style="border-top-color:var(--ok)"></span>Degrau 1 + reindustrialização</span>
+      </div>
+    </div>
+
+    <div class="small" id="propCharts"></div>
+
+    <div class="twrap card"><table id="propTable"></table></div>
+
+    <div class="card">
+      <h3>Como ler</h3>
+      <p class="flag" style="border-color:var(--ok)"><b>A escolha é política, não técnica.</b> O Degrau 1 (cobrar
+      do topo) e o Degrau 2 (cortar a Selic + defender o câmbio) chegam quase ao mesmo lugar — ambos controlam a
+      dívida e firmam o Real <b>muito melhor que o governo</b>, preservando o social. Qual seguir depende da
+      correlação de forças no Congresso, não da economia: pede-se o Degrau 1, desce-se ao Degrau 2 só se o topo
+      for barrado.</p>
+      <p class="flag" style="border-color:var(--frag)"><b>O crescimento está fora do que o modelo mede.</b> O
+      governo cresce mais no PIB — mas <b>a crédito</b> (dívida a 140%) e com o <b>Real fraco</b> (1,5). A
+      reindustrialização, que puxaria o PIB da proposta, o modelo vê só pelo custo, não pelo retorno (faltam
+      Kaldor-Verdoorn e Thirlwall — ver a aba <a href="#" id="toReind">Reindustrialização</a>). Por isso o PIB da
+      proposta aparece achatado; é limite do modelo, não da proposta.</p>
+      <p class="flag" style="border-color:var(--prem)"><b>O ouro e as reservas — o que o modelo vê e o que não
+      vê.</b> A tese: acumular ouro/reservas torna o corte da Selic seguro, defendendo o Real. O modelo precifica
+      o <b>custo</b> disso (o <i>carrego</i>: paga-se Selic sobre a reserva) e é <b>cego ao valor de defesa e
+      credibilidade</b> — a intervenção só dispara sob ataque. O que ele <b>confirma</b>: cortar a Selic encolhe o
+      carrego (de ~4,3% do PIB a 13,75% para ~2,6% a 10%), melhorando o quase-fiscal. O ganho cambial do ouro é
+      real, mas está fora deste modelo de mecanismo — é a fase de calibração.</p>
+      <p class="flag" style="border-color:var(--prem)"><b>Aposta:</b> que o Brasil esteja em dominância fiscal — o
+      câmbio responder ao corte da Selic sai do desenho do modelo, não de prova. Mecanismo, não previsão. Ver o
+      <a href="#" id="toVeredito3">Veredito</a>.</p>
+    </div>
+  </section>
+
+  <!-- ============ REINDUSTRIALIZAÇÃO ============ -->
+  <section class="panel" id="reind">
+    <div class="card">
+      <h2>Reindustrialização — o limite honesto do modelo</h2>
+      <p class="lede">Reindustrializar — portos, know-how, investimento público — é um pilar da proposta. Este
+      modelo, porém, não tem como precificar esse pilar. Vale dizer por quê, em vez de fingir que tem.</p>
+      <p class="lede">Mexa no investimento público abaixo. No modelo, a dívida sobe e o PIB cai. A explicação
+      está no ponto cego, logo em seguida — a reindustrialização em si fica fora do que o modelo mede.</p>
+    </div>
+
+    <div class="card">
+      <div class="ctl">
+        <label><span>Investimento público (% do PIB)</span><output id="reindOut">2,0%</output></label>
+        <input type="range" id="reindSlider" min="0" max="3" step="0.1" value="2">
+      </div>
+      <div class="ctl">
+        <label><span>Selic (% ao ano)</span><output id="reindSelicOut">13,75%</output></label>
+        <input type="range" id="reindSelicSlider" min="6" max="15" step="0.25" value="13.75">
+        <small>baixe o juro: o estrago do investimento diminui — mas o retorno segue invisível ao modelo</small>
+      </div>
+      <div class="legend">
+        <span><span class="sw" style="border-top-color:var(--a)"></span>com investimento</span>
+        <span><span class="sw" style="border-top:3px dotted var(--ink2)"></span>sem investimento</span>
+      </div>
+      <p class="who" id="reindResult"></p>
+    </div>
+
+    <div class="small" id="reindCharts"></div>
+
+    <div class="card">
+      <h3>Por que o modelo mostra isso</h3>
+      <p class="flag" style="border-color:var(--frag)">O modelo vê o custo e não vê o retorno. O investimento
+      público entra como mais gasto — mais dívida — e carrega o balanço do setor privado. A produtividade e as
+      elasticidades de comércio ficam fixas o tempo todo. Faltam dois canais: o de Kaldor-Verdoorn, em que o
+      produto puxa a produtividade, e o de Thirlwall, em que mudar a pauta exportadora afrouxa a restrição de
+      câmbio. Sem esses canais, qualquer investimento aparece só pelo lado da conta.</p>
+      <h3>O que um teste de verdade exigiria</h3>
+      <p class="flag" style="border-color:var(--prem)">Um bloco a mais: produtividade endógena (Kaldor-Verdoorn)
+      ou balança comercial estrutural. Isso é a fase de calibração (Lobo &amp; Oreiro), não este SFC, que é de
+      mecanismo. Até lá, o retorno da reindustrialização está fora do modelo — e é por isso que a linha cai.</p>
+    </div>
+  </section>
+
+  <!-- ============ JONES NO MODELO ============ -->
+  <section class="panel" id="jones">
+    <div class="card">
+      <h2>Jones no modelo — o alvo é o juro</h2>
+      <p class="lede">O pensamento marxista (Jones Manoel, podcast 3 Irmãos) posto a rodar no BrasilSFC. Jones
+      <b>diagnostica</b> o juro como a disfunção central, mas o remédio que ele propõe é <b>estrutural</b>
+      (revogar o teto, reindustrializar) — ele <b>não</b> propõe o corte operacional da Selic. O corte
+      <b>gradual</b> do juro é a ponte construída a partir do diagnóstico que ele compartilha com Lara Resende
+      (sem comprar o tabelamento abrupto). Os cenários abaixo separam o que é de cada um.</p>
+      <div class="legend">
+        <span><span class="sw" style="border-top:3px dashed var(--b)"></span>governo (PLP 299)</span>
+        <span><span class="sw" style="border-top:3px dotted var(--prem)"></span>Jones literal (juro intacto)</span>
+        <span><span class="sw" style="border-top-color:var(--a)"></span>+ corte gradual do juro</span>
+        <span><span class="sw" style="border-top-color:var(--ok)"></span>Jones operacional (arranjo completo)</span>
+      </div>
+    </div>
+
+    <div class="small" id="jonesCharts"></div>
+
+    <div class="twrap card"><table id="jonesTable"></table></div>
+
+    <div class="card">
+      <h3>Como ler</h3>
+      <p class="flag" style="border-color:var(--frag)"><b>O "Jones literal" é o pior de todos.</b> Revogar o teto
+      e reindustrializar <b>com o juro intacto</b> leva dívida e câmbio ao topo: sem âncora a dívida corre, e a
+      Selic alta pressiona o Real. É o próprio modelo mostrando por que o juro — que Jones diagnostica mas deixa
+      sobre a mesa — é a alavanca que decide.</p>
+      <p class="flag" style="border-color:var(--ok)"><b>Cortar o juro preserva o social.</b> Com o corte gradual,
+      a dívida e o câmbio voltam ao patamar do governo — mas com o <b>gasto social muito maior</b> (os pobres não
+      pagam a conta que o PLP 299 lhes cobra).</p>
+      <p class="flag" style="border-color:var(--accent)"><b>Só o arranjo operacional fecha os dois.</b> Âncora de
+      dívida + cobrança do topo + fricção cambial (reservas/ouro, τ) controlam dívida <b>e</b> câmbio juntos — ao
+      custo honesto de mais disciplina no gasto e menos crescimento. É a <b>teoria operacional</b> que a escola
+      marxista reconhece não ter; não é almoço grátis.</p>
+      <p class="flag" style="border-color:var(--prem)"><b>Aposta:</b> que o Brasil esteja em dominância fiscal — o
+      câmbio responder ao corte da Selic sai do desenho do modelo, não de prova. Mecanismo, não previsão. Ver o
+      <a href="#" id="toVeredito2">Veredito</a>.</p>
+    </div>
+  </section>
+
+  <!-- ============ NEO-FISHER · DEJANIR ============ -->
+  <section class="panel" id="neofisher">
+    <div class="card">
+      <h2>7ª lente — o neo-Fisherian de Dejanir Silva (Purdue, 2026)</h2>
+      <p class="lede">Um modelo de <b>teoria fiscal do nível de preços em economia aberta</b>, estimado em
+      dados do Brasil, roda aqui dentro: o Banco Central anuncia de forma crível baixar a Selic de 13,75%
+      para 7,5% e o modelo devolve inflação, juro real, câmbio e dívida, trimestre a trimestre. É um
+      adversário ortodoxo que <b>concede metade da tese do corte e nega a outra metade</b>. O
+      <span style="color:var(--a)"><b>plano</b></span> (seus controles) aparece contra a
+      <span style="color:var(--b)"><b>referência</b></span> do paper (benchmark sem intervenção).</p>
+      <div class="legend">
+        <span><span class="sw" style="border-top-color:var(--a)"></span>plano (seus controles)</span>
+        <span><span class="sw" style="border-top:3px dashed var(--b)"></span>referência (benchmark do paper)</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Ajuste o plano</h3>
+      <div id="nfControls" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px 22px">
+        <label><span class="q">Cortes trimestrais da Selic</span><input type="range" id="nf_cuts" min="1" max="12" step="1" value="4"><span class="nfval" id="nf_cuts_v"></span></label>
+        <label><span class="q">Venda de reservas (% do PIB)</span><input type="range" id="nf_sale" min="0" max="5" step="0.25" value="0"><span class="nfval" id="nf_sale_v"></span></label>
+        <label><span class="q">Prob. de reversão / trim.</span><input type="range" id="nf_risk" min="0" max="0.95" step="0.05" value="0"><span class="nfval" id="nf_risk_v"></span></label>
+        <label><span class="q">Economia de juros gasta</span><input type="range" id="nf_spend" min="0" max="1" step="0.05" value="0"><span class="nfval" id="nf_spend_v"></span></label>
+        <label><span class="q">Dívida pós-fixada (LFT)</span><input type="range" id="nf_short" min="0" max="100" step="1" value="33"><span class="nfval" id="nf_short_v"></span></label>
+        <label><span class="q">Dívida prefixada nominal</span><input type="range" id="nf_nominal" min="0" max="100" step="1" value="38"><span class="nfval" id="nf_nominal_v"></span></label>
+      </div>
+      <p id="nfStatus" class="flag" style="border-color:var(--accent);margin-top:14px;font-size:.9rem"></p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">
+      <div class="card chart"><h2>IPC · inflação cheia (% a.a.)</h2><div id="nfInfl"></div></div>
+      <div class="card chart"><h2>Selic real ex-ante (% a.a.)</h2><div id="nfReal"></div></div>
+      <div class="card chart"><h2>Câmbio real (log % do estado estac.)</h2><div id="nfFx"></div></div>
+      <div class="card chart"><h2>Dívida pública real (% de desvio)</h2><div id="nfDebt"></div></div>
+    </div>
+
+    <div class="card">
+      <h3>O que esta lente prova — e o que ela nega</h3>
+      <p class="flag" style="border-color:var(--ok)"><b>A favor do corte:</b> no longo prazo a inflação
+      <i>cai</i> (efeito neo-Fisherian de Uribe); a composição pós-fixada da dívida brasileira amortece o
+      choque; e uma venda de reservas de 1% do PIB corta o surto de impacto de <b>+3,3pp para +0,3pp</b>.</p>
+      <p class="flag" style="border-color:var(--frag)"><b>Contra o atalho:</b> o <i>juro real</i> de longo
+      prazo volta ao nível pré-plano — cortar a Selic nominal não resolve o juro real estrutural. E se o
+      governo <i>gastar</i> a economia de juros, o surto de impacto salta de 9,4% para <b>23,5%</b>.</p>
+      <p class="flag" style="border-color:var(--prem)"><b>Confronto &amp; paridade:</b> o modelo dele vive
+      sempre no regime "normal" (corte sempre deprecia); o <i>flip</i> de dominância fiscal da tese ALR não
+      existe nele — é onde nosso <a href="#" id="toBif">BrasilSFC (Bifurcação)</a> entra. O port Python
+      (<code>dejanir_model.py</code>) reproduz os números do paper até a casa decimal. Ver o
+      <a href="#" id="toVereditoNF">Veredito</a>.</p>
+    </div>
+  </section>
+
+  <!-- ============ VEREDITO ============ -->
+  <section class="panel" id="veredito">
+    <div class="card">
+      <h2>Veredito — qual tipo de robustez</h2>
+      <p class="lede">O contraditório do BrasilSFC não dá um semáforo. Cada afirmação entra num degrau nomeado
+      e carrega o que o semáforo esconde: <b>onde ela vale</b> e <b>o que a derrubaria</b>. Do mais firme ao mais frágil.</p>
+      <div class="ladder" id="ladder"></div>
+      <p class="flag" style="border-color:var(--prem)">O botão de "cutucar o limite" (levar o modelo à fronteira
+      onde a conclusão vira) chega junto com o Motor 2.</p>
+    </div>
+  </section>
+</main>
+
+<div class="bar" id="bar"></div>
+
+<!-- ============ MODELO (porta fiel de modelo-unico-escolas.py; roda no browser e no Node) ============ -->
+<script id="modelo">
+const ANO0 = 2026, T = 10;
+
+// Par defaults (= caso Ortodoxia). [E] dados BCB set/2026; [P] premissas em disputa.
+const DEFAULTS = {
+  d0:82.9, pb0:-0.52, selic0:13.75, ief0:11.0, pi0:4.6, u0:5.2, h0:0.5, pi_meta:3.0,
+  ajuste:0.45, gn:2.0, rn0:6.0,
+  th_d:0.04, th_p:0.25, kappa:0.0, p0:0.35,
+  selic_dec:-1.0, anos_dec:2, custo_juro:1.0,
+  mult:0.5, ric:0.25, hist:0.0,
+  phi_pi:2.0, phi_y:0.5, rho_i:0.4, b1:0.5, zeta:0.30, gam:0.6, kap:0.30,
+  phi_e:0.06, psi:5.0, c_k:0.15, okun:0.40, tau:0.35, w_ief:0.60, spread:2.75
+};
+
+function derivados(p){
+  const c = p.custo_juro;
+  const b2 = 0.05 + 0.25*c;
+  const eta = 1.0*c;
+  const a_exp = (p.selic_dec > 0) ? (0.5 + 0.5*c) : 0.5;
+  return [b2, eta, a_exp];
+}
+
+function simular(p, comAjuste){
+  const [b2, eta, a_exp] = derivados(p);
+  const n = T + 1;
+  const ks = "d pb selic ief pi pie u g hiato juros prem rn rreal crenca adj pib".split(" ");
+  const v = {}; ks.forEach(k => v[k] = new Array(n).fill(0));
+  v.d[0]=p.d0; v.pb[0]=p.pb0; v.selic[0]=p.selic0; v.ief[0]=p.ief0;
+  v.pi[0]=p.pi0; v.u[0]=p.u0; v.g[0]=p.gn; v.hiato[0]=p.h0;
+  v.pie[0]=p.pi_meta + 0.5*(p.pi0 - p.pi_meta);
+  v.rn[0]=p.rn0; v.rreal[0]=p.selic0 - v.pie[0];
+  v.juros[0]=8.99; v.crenca[0]=p.p0; v.pib[0]=100.0;
+  for(let t=1; t<n; t++){
+    const adj = comAjuste ? p.ajuste : 0.0;
+    v.adj[t] = adj;
+    const alvo_c = 1.0/(1.0 + Math.exp(-(adj - 0.27)/0.05));
+    v.crenca[t] = v.crenca[t-1] + 0.6*(alvo_c - v.crenca[t-1]);
+    v.prem[t] = p.th_d*(v.d[t-1] - p.d0) - p.th_p*adj + p.kappa*(p.p0 - v.crenca[t]);
+    v.rn[t] = p.rn0 + v.prem[t];
+    v.pie[t] = p.pi_meta + a_exp*(v.pi[t-1] - p.pi_meta) + p.zeta*Math.max(0.0, v.prem[t]);
+    if(p.selic_dec > 0){
+      const frac = Math.min(1.0, t/Math.max(1, p.anos_dec));
+      v.selic[t] = p.selic0 + frac*(p.selic_dec - p.selic0);
+    } else {
+      const alvo = v.rn[t] + p.pi_meta + p.phi_pi*(v.pie[t] - p.pi_meta) + p.phi_y*v.hiato[t-1];
+      v.selic[t] = p.rho_i*v.selic[t-1] + (1 - p.rho_i)*alvo;
+    }
+    v.rreal[t] = v.selic[t] - v.pie[t];
+    const m_ef = p.mult*(1 - p.ric);
+    v.hiato[t] = p.b1*v.hiato[t-1] - b2*(v.rreal[t] - v.rn[t]) - m_ef*(adj - v.adj[t-1]);
+    const gpot = p.gn - p.c_k*(v.rn[t] - p.rn0) + p.hist*Math.min(0.0, v.hiato[t-1]);
+    v.g[t] = gpot + (v.hiato[t] - v.hiato[t-1]);
+    v.pib[t] = v.pib[t-1]*(1 + v.g[t]/100);
+    v.u[t] = p.u0 - p.okun*(v.hiato[t] - p.h0);
+    const dep = p.psi*(v.prem[t] - v.prem[t-1]) - eta*(v.rreal[t] - v.rreal[t-1]);
+    v.pi[t] = p.gam*v.pie[t] + (1 - p.gam)*v.pi[t-1] + p.kap*v.hiato[t] + p.phi_e*dep;
+    v.ief[t] = v.ief[t-1] + p.w_ief*((v.selic[t] - p.spread) - v.ief[t-1]);
+    v.pb[t] = p.pb0 + adj + p.tau*(v.hiato[t] - p.h0);
+    const gy = (1 + v.g[t]/100)*(1 + v.pi[t]/100);
+    v.juros[t] = v.ief[t]/100*v.d[t-1]/gy;
+    v.d[t] = v.d[t-1]/gy + v.juros[t] - v.pb[t];
+  }
+  return v;
+}
+
+// presets: cada escola sobrescreve algumas chaves sobre DEFAULTS
+const ESCOLAS = {
+  "ortodoxia":      ["Ortodoxia", {}],
+  "pos-keynesiana": ["Pós-keynesiana", {th_d:0.02, th_p:0.0, mult:1.0, ric:0.0, hist:0.3, zeta:0.0, c_k:0.0, custo_juro:0.5}],
+  "mmt":            ["MMT", {th_d:0.0, th_p:0.0, mult:1.0, ric:0.0, hist:0.1, zeta:0.0, c_k:0.0, psi:0.0, selic_dec:7.5, custo_juro:0.0}],
+  "marxista":       ["Marxista", {th_d:0.0, th_p:0.0, mult:1.0, ric:0.0, zeta:0.0, c_k:0.0, custo_juro:0.5}],
+  "austriaca":      ["Austríaca", {th_d:0.06, th_p:0.25, mult:0.3, ric:0.5, c_k:0.30}],
+  "veto":           ["Economia política (veto)", {th_d:0.0, th_p:0.0, kappa:3.0, mult:0.8, ric:0.0}]
+};
+
+function resumo(p){
+  const a = simular(p, true), b = simular(p, false);
+  const med = x => { let s=0; for(let i=1;i<=T;i++) s+=x[i]; return s/T; };
+  return {
+    dA:a.d[T], dB:b.d[T], dif:a.d[T]-b.d[T],
+    piA:med(a.pi), piB:med(b.pi), selA:med(a.selic), selB:med(b.selic),
+    pib:100*(a.pib[T]/b.pib[T]-1), uA:Math.max(...a.u), a, b
+  };
+}
+
+if (typeof window !== "undefined") window.MODELO = {ANO0,T,DEFAULTS,derivados,simular,ESCOLAS,resumo};
+if (typeof module !== "undefined") module.exports = {ANO0,T,DEFAULTS,derivados,simular,ESCOLAS,resumo};
+</script>
+
+<!-- ============ MODELO 2 · BrasilSFC (porta fiel de brasil_sfc.py; browser + Node) ============ -->
+<script id="modelo2">
+const PARS = {
+  v:3.0, delta:0.02, prod_gr:0.02, pop_gr:0.01,
+  x_e:0.96, s_e:2.0, min_e:-0.04, y_e:0.0,
+  x_i:0.05, s_i:1.5, min_i:-0.01, y_i:0.05,
+  x_g:0.95, s_g:-0.5, min_g:-0.05, y_g:0.0,
+  tau:0.33, theta:0.47, theta_pre:0.26, theta_ipca:0.27,
+  r_pre:0.13, cupom_real:0.06, g0:0.33, spread_priv:0.03,
+  r_world:0.04, risk:0.03, eps_x:0.6, eps_m:0.3, eta_m:1.5, eta_x:1.0, x0e:16.0, m0e:16.0,
+  g_world:0.025, kappa:1.2, phi:0.5, intervene_frac:0.15, Yworld0:100.0,
+  infl0:0.035, k_dem:0.15, pass_through:0.15,
+  mult_pub:1.5, ret_reservas:0.04, b_dom:0.90, risk_b:0.06, phi_carry:0.40, phi_sust:0.90,
+  b_alvo:0.78, pb_star:0.0, phi_pb:0.30, banda:0.05,
+  arc_frac:0.70, arc_min:0.006, arc_max:0.025,
+  taylor_rn:0.06, taylor_pi_meta:0.03, taylor_phi_pi:2.0, taylor_phi_y:0.5, taylor_speed:1.5
+};
+
+function genexp(X, x0, s, mn, y0){ return (y0-mn)*Math.exp((X-x0)*s/(y0-mn))+mn; }
+function clampBanda(gap, banda){ if(Math.abs(gap)<=banda) return 0.0; return gap-(gap>0?banda:-banda); }
+
+// porta fiel de simula(Selic, ...) de brasil_sfc.py. opts = todas as alavancas (default-off).
+function simula(Selic, opts){
+  const o = Object.assign({
+    R0:0.15, accum0:0.004, cap_arcabouco:1.00, T:40.0, dt:0.01, p:null,
+    tax_rich:0.0, invest_pub:0.0, tau_fric:0.0,
+    phi_endog:false, conta_carrego:false, regra_divida:false, b0:0.78,
+    regime_gasto:null, every:5.0, taylor:false, ajuste:0.0, corte_G:0.0, ramp_anos:0.0
+  }, opts||{});
+  const p = Object.assign({}, PARS, o.p||{});
+  const g = k => p[k];
+  let Sel = Selic;
+  let K=300.0, a=1.0, N=100.0, w=1.0;
+  let D_priv=0.0, b=o.b0, R=o.R0, D_ext=0.10, e=1.0;
+  let Yworld=g('Yworld0');
+  let prev_deprec=0.0;
+  let gc=null;
+  let g_real_lag=g('prod_gr')+g('pop_gr');
+  const hist=[];
+  const steps=Math.trunc(o.T/o.dt);
+  const sampleEvery=Math.max(1, Math.trunc(o.every/o.dt));
+  for(let i=0;i<steps;i++){
+    const Y=K/g('v'), L=Y/a, lam=L/N, Wages=w*L;
+    const rm = o.ramp_anos>0 ? Math.min(1.0,(i*o.dt)/o.ramp_anos) : 1.0;
+    const tax=(g('tau')+o.tax_rich)*Y;
+    const G_Fn=genexp(lam, g('x_g'), g('s_g'), g('min_g'), g('y_g'));
+    const G_des=(g('g0')+G_Fn+o.invest_pub)*Y;
+    if(gc===null) gc=G_des/Y;
+    let G;
+    if(o.regra_divida){
+      const pb_target=g('pb_star')+g('phi_pb')*clampBanda(b-g('b_alvo'), g('banda'));
+      G=tax-pb_target*Y;
+    } else if(o.regime_gasto==='teto' || o.regime_gasto==='arcabouco'){
+      G=Math.min(G_des, gc*Y);
+    } else if(o.regime_gasto==='livre'){
+      G=G_des;
+    } else {
+      G=Math.min(G_des, o.cap_arcabouco*tax);
+    }
+    G=Math.max(G - o.corte_G*rm*Y, 0.0);
+    const pb_ratio=(tax-G)/Y;
+    const NetGovInj=G-tax;
+    const r_priv=Sel+g('spread_priv');
+    const Profit=Y-Wages-r_priv*D_priv+NetGovInj;
+    const pi=Profit/K;
+    let Inv=genexp(pi, g('x_i'), g('s_i'), g('min_i'), g('y_i'))*Y;
+    Inv+=g('mult_pub')*o.invest_pub*Y;
+    const g_real=Inv/K-g('delta');
+    const ee=Math.max(e,0.05);
+    const infl=g('infl0')+g('k_dem')*(lam-0.95)+g('pass_through')*Math.max(e-1.0,0.0)*0.1;
+    const g_nom=g_real+infl;
+    const r_gov=g('theta')*Sel+g('theta_pre')*g('r_pre')+g('theta_ipca')*(infl+g('cupom_real'));
+    const carrego=o.conta_carrego?Math.max(Sel-g('ret_reservas')-prev_deprec,0.0)*R:0.0;
+    const pb_eff=pb_ratio-carrego+o.ajuste*rm;
+    const db=(r_gov-g_nom)*b-pb_eff;
+    const risk_eff=g('risk')+(o.phi_endog?g('risk_b')*Math.max(b-g('b_dom'),0.0):0.0);
+    const kappa_eff=g('kappa')*(1.0-o.tau_fric);
+    const phi_eff=g('phi')*(1.0-0.5*o.tau_fric);
+    const X=g('x0e')*Math.pow(Yworld/100.0, g('eta_x'))*Math.pow(ee, g('eps_x'));
+    const M=g('m0e')*Math.pow(Y/100.0, g('eta_m'))*Math.pow(ee, -g('eps_m'));
+    const TB=X-M;
+    const CA=TB-g('r_world')*D_ext;
+    const carry=Sel-g('r_world')-risk_eff-infl;
+    const KA=kappa_eff*carry*Y;
+    const BP=CA+KA+o.accum0*Y;
+    let dR, de;
+    if(BP>=0){ dR=BP/Y; de=0.0; }
+    else { const defense=Math.min(-BP, R*Y*g('intervene_frac')); dR=-defense/Y; de=-phi_eff*(BP+defense)/Math.max(Y,1)*ee; }
+    if(o.phi_endog){
+      const w_dom=1.0/(1.0+Math.exp(-12.0*(b-g('b_dom'))));
+      const fric=1.0-0.5*o.tau_fric;
+      de += -g('phi_carry')*carry*ee*(1.0-w_dom)*fric;
+      de += g('phi_sust')*db*ee*w_dom*fric;
+    }
+    const dD_ext=(CA<0 ? -CA : -0.2*D_ext);
+    const Wage_Fn=genexp(lam, g('x_e'), g('s_e'), g('min_e'), g('y_e'));
+    K+=(Inv-g('delta')*K)*o.dt; a+=g('prod_gr')*a*o.dt;
+    N+=g('pop_gr')*N*o.dt; w+=Wage_Fn*w*o.dt;
+    D_priv+=(Inv-Profit)*o.dt; b+=db*o.dt;
+    R+=dR*o.dt; D_ext+=dD_ext*o.dt; e+=de*o.dt;
+    Yworld+=g('g_world')*Yworld*o.dt;
+    prev_deprec=de/ee;
+    if(o.taylor){
+      const sel_alvo=g('taylor_rn')+g('taylor_pi_meta')+g('taylor_phi_pi')*(infl-g('taylor_pi_meta'))+g('taylor_phi_y')*(lam-0.95);
+      Sel+=g('taylor_speed')*(sel_alvo-Sel)*o.dt;
+      Sel=Math.max(Sel,0.0);
+    }
+    if(o.regime_gasto==='teto'){ gc+=(0.0-g_real)*gc*o.dt; }
+    else if(o.regime_gasto==='arcabouco'){ const r_arc=Math.min(g('arc_max'),Math.max(g('arc_min'),g('arc_frac')*g_real_lag)); gc+=(r_arc-g_real)*gc*o.dt; }
+    g_real_lag=g_real;
+    if(i % sampleEvery === 0){
+      hist.push({t:i*o.dt, b, rg:r_gov-g_nom, cambio:e, R, selic:Sel, infl, g_nom, lam, pi,
+                 carrego, risk:risk_eff, pb:pb_ratio, gr:g_real, gsy:G/Y, taxy:tax/Y, Y, K, omega:Wages/Y});
+    }
+  }
+  return hist;
+}
+
+if (typeof window !== "undefined") window.MODELO2 = {PARS, genexp, simula};
+if (typeof module !== "undefined") module.exports = {PARS, genexp, simula};
+</script>
+
+<!-- ============ UI ============ -->
+<script>
+(() => {
+const {ANO0:Y0, T:HT, DEFAULTS, simular, ESCOLAS, resumo} = window.MODELO;
+const $ = s => document.querySelector(s);
+const el = (t, props={}, kids=[]) => { const e=document.createElement(t); Object.assign(e, props); kids.forEach(k=>e.append(k)); return e; };
+const nf = (x, d=1) => (x).toLocaleString("pt-BR", {minimumFractionDigits:d, maximumFractionDigits:d});
+const anos = Array.from({length:HT+1}, (_,t)=>Y0+t);
+
+// estado: p = premissas correntes
+let p = {...DEFAULTS};
+let escolaAtual = "ortodoxia";
+let playAte = HT;
+let pendingTab = null;
+
+// Motor 2 (BrasilSFC)
+const simulaSFC = window.MODELO2.simula;
+const anos2 = Array.from({length:9}, (_,t)=>2026+t);           // bifurcação: 2026..2034
+const BASE_QP = {T:11, dt:0.01, every:1.0, phi_endog:true, b0:0.829, p:{infl0:0.046}}; // quem paga: 2026..2036 (11 pts)
+const BASE_BIF = {T:9, dt:0.01, every:1.0, phi_endog:true, b0:0.829, p:{infl0:0.046}};  // bifurcação: 2026..2034
+const M2_DEFAULT = {meta:1.5, selic:13.75, ramp:0};            // mesma Selic p/ os dois pagadores
+let M2 = {...M2_DEFAULT};
+let REIND = {invest:2.0, selic:13.75};                        // aba reind: investimento (% PIB) e Selic (% a.a.)
+
+// --- definição dos sliders, agrupados pelas quatro perguntas/blocos ---
+const BLOCOS = [
+  ["Pergunta 1", "O ajuste derruba o juro?", [
+    ["th_d", 0, 0.10, 0.005, "Prêmio por dívida", v=>nf(v,3)],
+    ["th_p", 0, 1, 0.05, "Ajuste baixa o prêmio", v=>nf(v,2)],
+    ["kappa", 0, 4, 0.1, "Peso da crença", v=>nf(v,1)]
+  ]],
+  ["Pergunta 2", "O juro pode cair por decisão?", [
+    ["selic_dec", -1, 14, 0.5, "Selic decidida", v=> v<0 ? "regra de Taylor" : nf(v,1)+"%"],
+    ["custo_juro", 0, 1, 0.05, "Custo de baixar o juro", v=>nf(v,2)]
+  ]],
+  ["Custo do ajuste", "Quanto o ajuste tira de produto", [
+    ["mult", 0, 2.5, 0.1, "Multiplicador", v=>nf(v,1)],
+    ["ric", 0, 1, 0.05, "Compensação privada", v=>nf(v,2)],
+    ["hist", 0, 1, 0.05, "Histerese", v=>nf(v,2)]
+  ]],
+  ["Cenário", "O pano de fundo", [
+    ["ajuste", 0, 3, 0.05, "Ajuste (% do PIB)", v=>nf(v,2)+"%"],
+    ["gn", 0.5, 3.5, 0.1, "Crescimento potencial", v=>nf(v,1)+"%"],
+    ["rn0", 3, 8, 0.1, "Juro real neutro", v=>nf(v,1)+"%"]
+  ]]
+];
+const SLIDER_KEYS = BLOCOS.flatMap(b=>b[2].map(s=>s[0]));
+const sliderRefs = {};
+
+// --- gráfico SVG desenhado à mão (genérico: N séries, anos e horizonte próprios) ---
+function chart(series, {height=240, unit="", years=anos, ate=null}={}){
+  const W=400, H=height, ml=34, mr=40, mt=10, mb=22;
+  const iw=W-ml-mr, ih=H-mt-mb;
+  const HORIZON=years.length-1;
+  const A = (ate==null) ? HORIZON : Math.min(ate, HORIZON);
+  const vis = series.map(s => s.data.slice(0, A+1));
+  let lo=Infinity, hi=-Infinity;
+  series.forEach(s => s.data.forEach(y => { if(y<lo)lo=y; if(y>hi)hi=y; }));
+  if(hi-lo < 1e-9){ hi+=1; lo-=1; }
+  const pad=0.08*(hi-lo); lo-=pad; hi+=pad;
+  const X = i => ml + iw*(i/HORIZON);
+  const Yv = y => mt + ih*(1-(y-lo)/(hi-lo));
+  const NS="http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(NS,"svg");
+  svg.setAttribute("viewBox",`0 0 ${W} ${H}`); svg.setAttribute("role","img");
+  const mk=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+  // grade horizontal + rótulos y (casas decimais derivadas do passo, p/ não repetir inteiros)
+  const ticks=4;
+  const stepY=(hi-lo)/ticks;
+  const decY = stepY>=5 ? 0 : (stepY>=0.5 ? 1 : 2);
+  for(let i=0;i<=ticks;i++){
+    const yv=lo+(hi-lo)*i/ticks, yy=Yv(yv);
+    svg.append(mk("line",{x1:ml,y1:yy,x2:W-mr,y2:yy,stroke:"var(--line)","stroke-width":1}));
+    const tx=mk("text",{x:ml-4,y:yy+3,"text-anchor":"end",fill:"var(--ink2)","font-size":10,"font-family":"var(--mono)"});
+    tx.textContent=nf(yv, decY); svg.append(tx);
+  }
+  // eixo x: rótulo a cada 2 anos
+  years.forEach((an,i)=>{ if(i%2===0){
+    const xx=X(i);
+    const tx=mk("text",{x:xx,y:H-6,"text-anchor":"middle",fill:"var(--ink2)","font-size":10,"font-family":"var(--mono)"});
+    tx.textContent=an; svg.append(tx);
+  }});
+  // séries
+  const lastYs=[];
+  series.forEach((s,si)=>{
+    const d=vis[si];
+    let path=""; d.forEach((y,i)=>{ path += (i?"L":"M")+X(i)+" "+Yv(y); });
+    const dash = s.dasharray ? {"stroke-dasharray":s.dasharray} : (s.dash?{"stroke-dasharray":"6 4"}:{});
+    svg.append(mk("path",{d:path,fill:"none",stroke:s.color,"stroke-width":2, ...dash}));
+    const li=d.length-1, lx=X(li), ly=Yv(d[li]);
+    svg.append(mk("circle",{cx:lx,cy:ly,r:4,fill:s.color,stroke:"var(--surface)","stroke-width":2}));
+    lastYs.push({ly, val:d[li], color:s.color});
+  });
+  // rótulos de valor final, afastados se colidirem
+  lastYs.sort((a,b)=>a.ly-b.ly);
+  for(let i=1;i<lastYs.length;i++){ if(lastYs[i].ly-lastYs[i-1].ly<13) lastYs[i].ly=lastYs[i-1].ly+13; }
+  lastYs.forEach(o=>{
+    const tx=mk("text",{x:W-mr+4,y:o.ly+3,fill:"var(--ink)","font-size":10,"font-family":"var(--mono)"});
+    tx.textContent=nf(o.val,1); svg.append(tx);
+  });
+  // hover
+  const vline=mk("line",{x1:0,y1:mt,x2:0,y2:H-mb,stroke:"var(--ink2)","stroke-width":1,opacity:0});
+  const box=mk("g",{opacity:0});
+  const brect=mk("rect",{rx:4,fill:"var(--surface)",stroke:"var(--line)","stroke-width":1});
+  const btext=mk("text",{"font-size":10,"font-family":"var(--mono)",fill:"var(--ink)"});
+  box.append(brect,btext); svg.append(vline,box);
+  const over=mk("rect",{x:ml,y:mt,width:iw,height:ih,fill:"transparent"});
+  svg.append(over);
+  function move(ev){
+    const r=svg.getBoundingClientRect();
+    const cx=(ev.touches?ev.touches[0].clientX:ev.clientX)-r.left;
+    const px=cx/r.width*W;
+    let i=Math.round((px-ml)/iw*HORIZON); i=Math.max(0,Math.min(HORIZON,i));
+    if(i>A) i=A;
+    const xx=X(i);
+    vline.setAttribute("x1",xx); vline.setAttribute("x2",xx); vline.setAttribute("opacity",1);
+    btext.textContent="";
+    const l1=mk("tspan",{x:0,dy:0}); l1.textContent=years[i]; btext.append(l1);
+    series.forEach((s)=>{ const ts=mk("tspan",{x:0,dy:12,fill:s.color}); ts.textContent=nf(s.data[i],1)+unit; btext.append(ts); });
+    box.setAttribute("opacity",1);
+    const bw=58, bh=16+series.length*12;
+    let bx=xx+8; if(bx+bw>W-2) bx=xx-bw-8;
+    brect.setAttribute("x",bx);brect.setAttribute("y",mt);brect.setAttribute("width",bw);brect.setAttribute("height",bh);
+    btext.setAttribute("x",bx+6);btext.setAttribute("y",mt+13);
+    btext.querySelectorAll("tspan").forEach(t=>t.setAttribute("x",bx+6));
+  }
+  function leave(){ vline.setAttribute("opacity",0); box.setAttribute("opacity",0); }
+  over.addEventListener("mousemove",move); over.addEventListener("mouseleave",leave);
+  over.addEventListener("touchstart",move,{passive:true}); over.addEventListener("touchmove",move,{passive:true});
+  return svg;
+}
+
+const SMALL = [
+  ["selic","Selic (%)","%"], ["pi","IPCA (%)","%"], ["g","Crescimento (%)","%"],
+  ["u","Desemprego (%)","%"], ["juros","Juros pagos (% PIB)",""]
+];
+
+function serie(a,b,k){ return [
+  {data:a[k], color:"var(--a)", dash:false},
+  {data:b[k], color:"var(--b)", dash:true}
+];}
+
+function render(){
+  const a = simular(p, true), b = simular(p, false);
+  // tiles
+  const dA=a.d[HT], dB=b.d[HT], dif=dA-dB;
+  $("#tiles").replaceChildren(
+    el("div",{className:"tile"},[el("div",{className:"k",textContent:"Dívida 2036 · com ajuste"}),el("div",{className:"v",textContent:nf(dA,1)+"%"})]),
+    el("div",{className:"tile"},[el("div",{className:"k",textContent:"Dívida 2036 · sem ajuste"}),el("div",{className:"v",textContent:nf(dB,1)+"%"})]),
+    el("div",{className:"tile"},[el("div",{className:"k",textContent:"Efeito do ajuste"}),el("div",{className:"v",textContent:(dif>=0?"+":"")+nf(dif,1)+" pp"})])
+  );
+  // main
+  $("#mainChart").replaceChildren(chart(serie(a,b,"d"),{height:240,unit:"%",ate:playAte}));
+  // small
+  $("#smallCharts").replaceChildren(...SMALL.map(([k,tit,u])=>
+    el("div",{className:"card chart"},[el("div",{className:"ttl",textContent:tit}), chart(serie(a,b,k),{height:150,unit:u,ate:playAte})])
+  ));
+  // tabela
+  const head = el("tr",{},["Ano","Dívida A (% PIB)","Dívida B (% PIB)","Selic A (% a.a.)","IPCA A (% a.a.)",
+    "Cresc. A (% a.a.)","Desemp. A (%)","Juros A (% PIB)"].map(h=>el("th",{textContent:h})));
+  const rows = anos.map((an,t)=>el("tr",{},[
+    el("td",{textContent:an}),
+    el("td",{textContent:nf(a.d[t],1)}), el("td",{textContent:nf(b.d[t],1)}),
+    el("td",{textContent:nf(a.selic[t],2)}), el("td",{textContent:nf(a.pi[t],2)}),
+    el("td",{textContent:nf(a.g[t],2)}), el("td",{textContent:nf(a.u[t],2)}), el("td",{textContent:nf(a.juros[t],2)})
+  ]));
+  $("#yearTable").replaceChildren(el("thead",{},[head]), el("tbody",{},rows));
+  // barra fixa
+  $("#bar").replaceChildren(
+    el("span",{innerHTML:`com ajuste <b>${nf(dA,1)}%</b>`}),
+    el("span",{innerHTML:`sem ajuste <b>${nf(dB,1)}%</b>`}),
+    el("span",{innerHTML:`efeito <b>${(dif>=0?"+":"")+nf(dif,1)} pp</b>`})
+  );
+  renderDecomp(); renderTornado();
+}
+
+// --- chips ---
+function montarChips(){
+  $("#chips").replaceChildren(...Object.entries(ESCOLAS).map(([k,[nome]])=>
+    el("button",{className:"chip",textContent:nome,onclick:()=>aplicarEscola(k),
+      "aria-pressed": String(k===escolaAtual)})
+  ));
+}
+function marcarChips(){
+  [...$("#chips").children].forEach((c,i)=>{
+    const k=Object.keys(ESCOLAS)[i]; c.setAttribute("aria-pressed", String(k===escolaAtual));
+  });
+  $("#who").innerHTML = escolaAtual
+    ? `Escola: <b>${ESCOLAS[escolaAtual][0]}</b>`
+    : `<b>Combinação sua</b> — você saiu das escolas`;
+}
+function aplicarEscola(k){
+  escolaAtual=k; p={...DEFAULTS, ...ESCOLAS[k][1]};
+  sincronizarSliders(); marcarChips(); render(); gravarURL();
+}
+
+// --- sliders ---
+function montarControles(){
+  $("#controls").replaceChildren(...BLOCOS.map(([q,sub,defs])=>{
+    const card=el("div",{className:"card"});
+    card.append(el("div",{className:"q",textContent:q}));
+    card.append(el("h3",{textContent:sub}));
+    defs.forEach(([k,lo,hi,step,rot,fmt])=>{
+      const ctl=el("div",{className:"ctl"});
+      const out=el("output",{textContent:fmt(p[k])});
+      const lab=el("label",{},[el("span",{textContent:rot}), out]);
+      const inp=el("input",{type:"range",min:lo,max:hi,step:step,value:p[k]});
+      inp.addEventListener("input",()=>{
+        p[k]=parseFloat(inp.value); out.textContent=fmt(p[k]);
+        escolaAtual=null; marcarChips(); render(); gravarURL();
+      });
+      sliderRefs[k]={inp,out,fmt};
+      ctl.append(lab,inp);
+      if(k==="ajuste") ctl.append(el("small",{textContent:"0,45% ≈ R$ 60 bi (o pacote em tramitação)"}));
+      if(k==="th_d") ctl.append(el("small",{textContent:"premissa sem estimativa brasileira firme"}));
+      card.append(ctl);
+    });
+    return card;
+  }));
+}
+function sincronizarSliders(){
+  SLIDER_KEYS.forEach(k=>{ const r=sliderRefs[k]; if(r){ r.inp.value=p[k]; r.out.textContent=r.fmt(p[k]); }});
+}
+
+// --- URL state ---
+function gravarURL(){
+  const q=new URLSearchParams();
+  if(escolaAtual) q.set("e",escolaAtual);
+  else SLIDER_KEYS.forEach(k=>q.set(k, (+p[k]).toString()));
+  history.replaceState(null,"","#"+q.toString());
+}
+function lerURL(){
+  const h=location.hash.slice(1); if(!h) return;
+  const q=new URLSearchParams(h);
+  if(q.get("t")==="m2"){
+    Object.keys(M2_DEFAULT).forEach(k=>{ if(q.has(k)){ const x=parseFloat(q.get(k)); if(!isNaN(x)) M2[k]=x; }});
+    pendingTab="motor2"; return;
+  }
+  if(q.has("e") && ESCOLAS[q.get("e")]){ escolaAtual=q.get("e"); p={...DEFAULTS,...ESCOLAS[escolaAtual][1]}; return; }
+  let mexeu=false;
+  SLIDER_KEYS.forEach(k=>{ if(q.has(k)){ const x=parseFloat(q.get(k)); if(!isNaN(x)){ p[k]=x; mexeu=true; }}});
+  if(mexeu) escolaAtual=null;
+}
+
+// --- ver ano a ano ---
+function play(){
+  playAte=0; const btn=$("#playBtn"); btn.disabled=true;
+  const timer=setInterval(()=>{
+    playAte++; render();
+    if(playAte>=HT){ clearInterval(timer); btn.disabled=false; }
+  },420);
+}
+
+// --- tabs ---
+function montarTabs(){
+  document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected", String(x===t)));
+    document.querySelectorAll(".panel").forEach(pnl=>pnl.classList.toggle("on", pnl.id===t.dataset.panel));
+    $("#bar").style.display = (t.dataset.panel==="motor1") ? "flex" : "none";  // barra é do Motor 1
+  }));
+}
+
+// --- tema ---
+$("#theme").addEventListener("click",()=>{
+  const cur=document.documentElement.getAttribute("data-theme");
+  const dark=window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const next = cur ? (cur==="dark"?"light":"dark") : (dark?"light":"dark");
+  document.documentElement.setAttribute("data-theme",next); render();
+});
+
+// --- escada de robustez (dados do contraditório) ---
+const LADDER = [
+  ["id","Identidade","O juro pesa mais que o primário","Contábil. Meio ponto de juro real vale o pacote inteiro; cada ponto de juro sobre a dívida ≈ 0,83% do PIB/ano.","—"],
+  ["ok","Robusta","Mesma meta pelo topo preserva o piso — e domina","Dívida 142,6% vs 153,1%, gasto social 33,0% vs 31,5%, PIB maior. Vale em qualquer calibração.","Valores finos da receita do topo: a conferir em fonte primária."],
+  ["dir","Robusta em direção","Sem âncora, a dívida explode","O sinal é firme em qualquer calibração; o nível exato (371%) depende de horizonte e parâmetros.","Ler a direção, não o ponto."],
+  ["constr","Robusta por construção","Cortar a Selic aprecia o Real (em dominância)","Sai do desenho da equação do câmbio, não de prova empírica. Vale para todo b_dom∈[0,70;1,20].","Vira evidência com estudo de evento BCB/B3. O sinal vira perto de 56% de dívida.","cambio"],
+  ["cond","Condicional","O ajuste estabiliza a variação da dívida, não o nível","A variação→0; o nível fica ≈237%, não 116%. Horizonte confiável ~25–30 anos.","Além de ~30 anos o modelo diverge (Goodwin)."],
+  ["prem","Premissa","\"Brasil está em dominância fiscal\"","É a hipótese que liga o prêmio de risco à dívida — escolhida, não medida.","b_dom = 0,90 é estilizado, sem estimativa brasileira."],
+  ["frag","Frágil","Carrego das reservas \"11% do PIB/ano\"","Só vale com reservas ≈100% do PIB; o carrego real é ~1,6% a reservas de 15% do PIB.","Nível pontual quebra fora dessa condição estreita."],
+  ["frag","Frágil","Parcela salarial ω acima de 1","Salário não pode exceder o produto — é overshoot do ciclo de Goodwin, não resultado.","Ler direção do ciclo, nunca o nível."]
+];
+function montarLadder(){
+  $("#ladder").replaceChildren(...LADDER.map(([cls,badge,claim,faixa,derruba,poke])=>{
+    const corpo=el("div",{},[
+      el("div",{className:"claim",textContent:claim}),
+      el("div",{className:"meta",innerHTML:`<b>Onde vale:</b> ${faixa}`}),
+      el("div",{className:"meta",innerHTML:`<b>O que a derrubaria:</b> ${derruba}`})
+    ]);
+    if(poke==="cambio"){
+      const demo=el("div",{style:"display:none;margin-top:8px;border-top:1px solid var(--line);padding-top:8px"});
+      const btn=el("button",{className:"btn",style:"align-self:start;margin-top:8px",textContent:"Cutucar o limite ▸"});
+      btn.onclick=()=>{
+        if(demo.style.display==="none"){ renderPokeCambio(demo); demo.style.display="block"; btn.textContent="Esconder ▾"; }
+        else { demo.style.display="none"; btn.textContent="Cutucar o limite ▸"; }
+      };
+      corpo.append(btn,demo);
+    }
+    return el("div",{className:"rung"},[el("span",{className:"badge "+cls,textContent:badge}), corpo]);
+  }));
+}
+
+// cutucar: leva o modelo ao limite onde o sinal do câmbio vira (corte da Selic 13,75%→8%)
+function renderPokeCambio(container){
+  const camFim=(b0,sel)=>{ const h=simulaSFC(sel,{T:8,dt:0.01,every:1.0,phi_endog:true,b0:b0,p:{infl0:0.046}}); return h[h.length-1].cambio; };
+  const niveis=[[0.83,"Dívida 83% (hoje)"],[0.56,"Dívida ~56% (o limite)"],[0.35,"Dívida 35%"]];
+  const linhas=niveis.map(([b0,lab])=>{
+    const alta=camFim(b0,0.1375), corte=camFim(b0,0.08), aprecia=corte<alta;
+    return el("div",{className:"meta",innerHTML:`<b>${lab}:</b> cortar a Selic leva o câmbio de ${nf(alta,2)} para ${nf(corte,2)} — `
+      +`<b style="color:${aprecia?'var(--ok)':'var(--frag)'}">${aprecia?'aprecia':'deprecia'}</b>`});
+  });
+  container.replaceChildren(
+    el("div",{className:"meta",innerHTML:"Resposta do câmbio a um corte de Selic (13,75% → 8%), por nível de dívida inicial:"}),
+    ...linhas,
+    el("div",{className:"meta",style:"margin-top:6px",innerHTML:"O Brasil está hoje no regime que <b>aprecia</b>. "
+      +"O sinal vira perto de 56% de dívida — abaixo disso, cortar <b>deprecia</b>. Que o país esteja acima do limiar "
+      +"é o desenho do modelo, não uma medida."})
+  );
+}
+
+// --- barras horizontais (decomposição e tornado) ---
+function barsH(items, {height=150, unit=""}={}){
+  const W=400, H=height, ml=132, mr=56, mt=6, mb=6;  // mr reserva uma coluna fixa de valores à direita
+  const iw=W-ml-mr, ih=H-mt-mb;
+  const maxv=Math.max(...items.map(i=>Math.abs(i.value)), 1e-9);
+  const hasNeg=items.some(i=>i.value<-1e-9);
+  const lo=hasNeg?-maxv:0, hi=maxv;
+  const X=v=>ml+iw*(v-lo)/(hi-lo);
+  const NS="http://www.w3.org/2000/svg";
+  const svg=document.createElementNS(NS,"svg"); svg.setAttribute("viewBox",`0 0 ${W} ${H}`); svg.setAttribute("role","img");
+  const mk=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+  const zx=X(0);
+  svg.append(mk("line",{x1:zx,y1:mt,x2:zx,y2:H-mb,stroke:"var(--line)","stroke-width":1}));
+  const rowH=ih/items.length, bh=Math.min(16,rowH*0.62);
+  items.forEach((it,i)=>{
+    const cy=mt+rowH*(i+0.5);
+    const xx=X(it.value), x1=Math.min(zx,xx), w=Math.max(Math.abs(xx-zx),0.5);
+    svg.append(mk("rect",{x:x1,y:cy-bh/2,width:w,height:bh,fill:it.color,rx:2}));
+    const lab=mk("text",{x:ml-6,y:cy+3,"text-anchor":"end",fill:"var(--ink)","font-size":10,"font-family":"var(--body)"});
+    lab.textContent=it.label; svg.append(lab);
+    const val=mk("text",{x:W-mr+5,y:cy+3,"text-anchor":"start",fill:"var(--ink2)","font-size":10,"font-family":"var(--mono)"});
+    val.textContent=(it.value>=0?"+":"")+nf(it.value,1)+unit; svg.append(val);
+  });
+  return svg;
+}
+const SLIDER_META={};
+BLOCOS.forEach(([q,sub,defs])=>defs.forEach(([k,lo,hi,step,rot])=>SLIDER_META[k]={lo,hi,rot}));
+
+// decomposição acumulada da variação da dívida (cenário com ajuste): juros + crescimento + primário = total
+function renderDecomp(){
+  const a=simular(p,true);
+  let cJ=0,cC=0,cP=0;
+  for(let t=1;t<=HT;t++){
+    const gy=(1+a.g[t]/100)*(1+a.pi[t]/100);
+    cC+=a.d[t-1]*(1/gy-1); cJ+=a.juros[t]; cP+=-a.pb[t];
+  }
+  const total=a.d[HT]-a.d[0];
+  $("#decompChart").replaceChildren(barsH([
+    {label:"Juros", value:cJ, color:"var(--b)"},
+    {label:"Crescimento nominal", value:cC, color:"var(--a)"},
+    {label:"Primário", value:cP, color:"var(--ink2)"},
+    {label:"= Variação total", value:total, color:"var(--accent)"}
+  ],{height:142, unit:" pp"}));
+}
+
+// tornado: swing da dívida de 2036 (com ajuste) ao mexer cada premissa ±10% da faixa
+function renderTornado(){
+  const keys=SLIDER_KEYS.filter(k=>k!=="selic_dec");  // selic_dec é chave de modo, não sensibilidade contínua
+  const items=keys.map(k=>{
+    const {lo,hi,rot}=SLIDER_META[k];
+    const d=(hi-lo)*0.1;
+    const up=simular({...p,[k]:Math.min(hi,p[k]+d)},true).d[HT];
+    const dn=simular({...p,[k]:Math.max(lo,p[k]-d)},true).d[HT];
+    const v=up-dn;
+    return {label:rot, value:v, color:v>=0?"var(--b)":"var(--a)"};
+  }).sort((a,b)=>Math.abs(b.value)-Math.abs(a.value));
+  $("#tornadoChart").replaceChildren(barsH(items,{height:items.length*18+10, unit:" pp"}));
+}
+
+// seis escolas lado a lado (dívida A/B), cada uma na sua escala
+function renderSix(){
+  $("#sixCharts").replaceChildren(...Object.entries(ESCOLAS).map(([k,[nome,mod]])=>{
+    const pp={...DEFAULTS,...mod};
+    const a=simular(pp,true), b=simular(pp,false);
+    return cardChart(nome, chart(serie(a,b,"d"),{height:130,unit:"%"}));
+  }));
+}
+
+// --- Motor 2: cenários, séries de 3 e render ---
+const cardChart=(tit,svg)=>el("div",{className:"card chart"},[el("div",{className:"ttl",textContent:tit}),svg]);
+
+// três séries sobre {topo, piso, sem}: topo (azul cheio) · piso (laranja tracejado) · sem (cinza pontilhado)
+function trip(c, key, scale=1){ return [
+  {data:c.topo.map(r=>r[key]*scale), color:"var(--a)"},
+  {data:c.piso.map(r=>r[key]*scale), color:"var(--b)", dasharray:"6 4"},
+  {data:c.sem.map(r=>r[key]*scale), color:"var(--ink2)", dasharray:"2 3"}
+];}
+function tripPIB(c){ const idx=h=>h.map(r=>100*r.Y/h[0].Y); return [
+  {data:idx(c.topo), color:"var(--a)"},
+  {data:idx(c.piso), color:"var(--b)", dasharray:"6 4"},
+  {data:idx(c.sem), color:"var(--ink2)", dasharray:"2 3"}
+];}
+
+// QUEM PAGA? comparação PURA: MESMA Selic e MESMA meta; muda só de ONDE vem o dinheiro.
+//   topo = cobra os ricos (ajuste), piso intacto   ·   piso = corta o gasto dos pobres (corte_G)
+function cenariosQuemPaga(meta, selic, ramp){
+  const META=meta/100, S=selic/100;
+  return {
+    sem:  simulaSFC(S, {...BASE_QP}),
+    topo: simulaSFC(S, {...BASE_QP, ajuste:META, ramp_anos:ramp}),
+    piso: simulaSFC(S, {...BASE_QP, corte_G:META, ramp_anos:ramp})
+  };
+}
+// BIFURCAÇÃO: pacotes inteiros do futuros.py (aqui a Selic TAMBÉM muda).
+function cenariosBifurcacao(){
+  const META=0.015, RAMP=4;
+  return {
+    sem:  simulaSFC(0.1375, {...BASE_BIF}),
+    piso: simulaSFC(0.1375, {...BASE_BIF, regime_gasto:"arcabouco", corte_G:META, ramp_anos:RAMP}),
+    topo: simulaSFC(0.10,   {...BASE_BIF, conta_carrego:true, tau_fric:0.6, ajuste:META, ramp_anos:RAMP})
+  };
+}
+
+// tabela comparativa; 'ter' = índice do ano terminal; 'ano' rotula as colunas
+function tabelaCenarios(elId, c, rotTopo, rotPiso, ter, anoTer){
+  const cols=["",`Dívida 2030 (% PIB)`,`Dívida ${anoTer} (% PIB)`,`Gasto ${anoTer} (% PIB)`,
+              `PIB ${anoTer} (2026=100)`,`Câmbio ${anoTer} (R$/US$)`,`IPCA ${anoTer} (% a.a.)`];
+  const row=(nome,h)=>el("tr",{},[el("td",{textContent:nome}),
+    el("td",{textContent:nf(h[4].b*100,1)}), el("td",{textContent:nf(h[ter].b*100,1)}),
+    el("td",{textContent:nf(h[ter].gsy*100,1)}), el("td",{textContent:nf(100*h[ter].Y/h[0].Y,1)}),
+    el("td",{textContent:nf(h[ter].cambio,2)}), el("td",{textContent:nf(h[ter].infl*100,1)})]);
+  $(elId).replaceChildren(
+    el("thead",{},[el("tr",{},cols.map(h=>el("th",{textContent:h})))]),
+    el("tbody",{},[row(rotTopo,c.topo), row(rotPiso,c.piso), row("sem ajuste",c.sem)])
+  );
+}
+
+function renderM2(){
+  const c=cenariosQuemPaga(M2.meta, M2.selic, M2.ramp);
+  $("#m2charts").replaceChildren(
+    cardChart("Dívida bruta (% do PIB)", chart(trip(c,"b",100),{height:170,unit:"%",years:anos})),
+    cardChart("Gasto social (% do PIB)", chart(trip(c,"gsy",100),{height:170,unit:"%",years:anos})),
+    cardChart("PIB (índice, 2026=100)", chart(tripPIB(c),{height:170,years:anos})),
+    cardChart("Câmbio (R$/US$)", chart(trip(c,"cambio",1),{height:170,years:anos}))
+  );
+  tabelaCenarios("#m2table", c, "cobra o topo — ricos pagam", "corta o piso — pobres pagam", HT, 2036);
+}
+
+const M2DEFS=[
+  ["A meta (igual para os dois pagadores)", [
+    ["meta", 0, 3, 0.05, "Meta de primário (% PIB)", v=>nf(v,2)+"%"],
+    ["ramp", 0, 8, 1, "Rampa do ajuste (anos)", v=>nf(v,0)]
+  ]],
+  ["O juro (igual para os dois pagadores)", [
+    ["selic", 0, 15, 0.25, "Selic (%)", v=>nf(v,2)+"%"]
+  ]]
+];
+const m2Refs={};
+function montarM2Controles(){
+  $("#m2controls").replaceChildren(...M2DEFS.map(([titulo,defs])=>{
+    const card=el("div",{className:"card"});
+    card.append(el("h3",{textContent:titulo}));
+    defs.forEach(([k,lo,hi,step,rot,fmt])=>{
+      const ctl=el("div",{className:"ctl"});
+      const out=el("output",{textContent:fmt(M2[k])});
+      const lab=el("label",{},[el("span",{textContent:rot}), out]);
+      const inp=el("input",{type:"range",min:lo,max:hi,step:step,value:M2[k]});
+      inp.addEventListener("input",()=>{ M2[k]=parseFloat(inp.value); out.textContent=fmt(M2[k]); renderM2(); gravarURLM2(); });
+      m2Refs[k]={inp,out,fmt};
+      ctl.append(lab,inp);
+      if(k==="meta") ctl.append(el("small",{textContent:"1,5% ≈ a meta terminal do PLP 299"}));
+      if(k==="selic") ctl.append(el("small",{textContent:"a MESMA para os dois: aqui só muda quem paga, não o juro"}));
+      card.append(ctl);
+    });
+    return card;
+  }));
+}
+function sincronizarM2(){ Object.keys(M2_DEFAULT).forEach(k=>{const r=m2Refs[k]; if(r){r.inp.value=M2[k]; r.out.textContent=r.fmt(M2[k]);}}); }
+
+// --- Bifurcação (pacotes inteiros do futuros.py; a Selic também muda) ---
+function renderBif(){
+  const c=cenariosBifurcacao();
+  $("#bifChart").replaceChildren(chart(trip(c,"b",100),{height:240,unit:"%",years:anos2}));
+  tabelaCenarios("#bifTable", c, "estudo (topo + Selic 10%)", "governo (piso + Selic 13,75%)", 8, 2034);
+}
+
+// --- Reindustrialização: o modelo vê o custo, não o retorno (invest_pub quase sempre piora) ---
+function renderReind(){
+  const ip=REIND.invest/100, S=REIND.selic/100;
+  const sem=simulaSFC(S, {...BASE_QP});
+  const com=simulaSFC(S, {...BASE_QP, invest_pub:ip});
+  const duo=(key,scale)=>[
+    {data:com.map(r=>r[key]*scale), color:"var(--a)"},
+    {data:sem.map(r=>r[key]*scale), color:"var(--ink2)", dasharray:"2 3"}
+  ];
+  const pibduo=()=>[
+    {data:com.map(r=>100*r.Y/com[0].Y), color:"var(--a)"},
+    {data:sem.map(r=>100*r.Y/sem[0].Y), color:"var(--ink2)", dasharray:"2 3"}
+  ];
+  $("#reindCharts").replaceChildren(
+    cardChart("Dívida bruta (% do PIB)", chart(duo("b",100),{height:200,unit:"%",years:anos})),
+    cardChart("PIB (índice, 2026=100)", chart(pibduo(),{height:200,years:anos}))
+  );
+  const b0=sem[HT].b*100, b1=com[HT].b*100, y0=100*sem[HT].Y/sem[0].Y, y1=100*com[HT].Y/com[0].Y;
+  $("#reindResult").textContent =
+    `Selic a ${nf(REIND.selic,2)}%: com ${nf(REIND.invest,1)}% do PIB em investimento, no modelo a dívida de 2036 `
+    + `vai de ${nf(b0,1)}% para ${nf(b1,1)}% e o PIB de ${nf(y0,1)} para ${nf(y1,1)} — o modelo conta o gasto e ignora o retorno.`;
+}
+
+// --- A proposta · a escada (a proposta própria; calibração set/2026, 2026..2038) ---
+const anosP = Array.from({length:13}, (_,t)=>2026+t);
+const BASE_P = {T:12, dt:0.01, every:1.0, phi_endog:true, b0:0.829, p:{infl0:0.046, b_alvo:0.82}};
+// [nome, Selic, kwargs, cor, dasharray] — a escada: topo paga (D1) ≈ cortar a Selic (D2); reind por cima.
+// carrego ON só no corte (onde ele ENCOLHE); 'topo paga' = tax_rich (preserva o gasto), nunca ajuste+regra.
+const PCEN = [
+  ["Governo — PLP 299 (corta o piso, Selic 13,75%)", 0.1375, {regime_gasto:"arcabouco", corte_G:0.015, ramp_anos:4}, "var(--b)", "6 4"],
+  ["Degrau 1 — alternativa direta (topo paga + revogar-e-ancorar, Selic intacta)", 0.1375, {regra_divida:true, tax_rich:0.013}, "var(--a)", null],
+  ["Degrau 2 — plano B (cortar a Selic + defesa cambial), se o topo for barrado", 0.10, {regra_divida:true, tau_fric:0.4, conta_carrego:true, accum0:0.012, R0:0.25}, "var(--prem)", null],
+  ["Degrau 1 + reindustrialização (portos + know-how)", 0.1375, {regra_divida:true, tax_rich:0.013, invest_pub:0.02}, "var(--ok)", null]
+];
+function renderProposta(){
+  const runs = PCEN.map(([nome,S,kw,color,dash]) => ({nome,S,color,dash, h: simulaSFC(S, {...BASE_P, ...kw})}));
+  const serie = (key,scale) => runs.map(r => ({data:r.h.map(x=>x[key]*scale), color:r.color, dasharray:r.dash||undefined}));
+  const seriePIB = () => runs.map(r => ({data:r.h.map(x=>100*x.Y/r.h[0].Y), color:r.color, dasharray:r.dash||undefined}));
+  $("#propCharts").replaceChildren(
+    cardChart("Dívida bruta (% do PIB)", chart(serie("b",100),{height:180,unit:"%",years:anosP})),
+    cardChart("Câmbio (R$/US$)", chart(serie("cambio",1),{height:180,years:anosP})),
+    cardChart("Gasto social (% do PIB)", chart(serie("gsy",100),{height:180,unit:"%",years:anosP})),
+    cardChart("PIB (índice, 2026=100)", chart(seriePIB(),{height:180,years:anosP}))
+  );
+  const cols=["","Selic","Dívida 2038 (% PIB)","Câmbio 2038 (R$/US$)","Gasto 2038 (% PIB)","PIB 2038 (2026=100)"];
+  const row=r=>{ const f=r.h[r.h.length-1]; return el("tr",{},[
+    el("td",{textContent:r.nome}), el("td",{textContent:nf(r.S*100,2)+"%"}),
+    el("td",{textContent:nf(f.b*100,1)}), el("td",{textContent:nf(f.cambio,2)}),
+    el("td",{textContent:nf(f.gsy*100,1)}), el("td",{textContent:nf(100*f.Y/r.h[0].Y,1)})]); };
+  $("#propTable").replaceChildren(
+    el("thead",{},[el("tr",{},cols.map(h=>el("th",{textContent:h})))]),
+    el("tbody",{}, runs.map(row))
+  );
+}
+
+// --- Jones no modelo (porta do bateria_jones.py; calibração set/2026, 2026..2038) ---
+const anosJ = Array.from({length:13}, (_,t)=>2026+t);
+const BASE_J = {T:12, dt:0.01, every:1.0, phi_endog:true, conta_carrego:true, b0:0.829, p:{infl0:0.046}};
+// [nome, Selic, kwargs, cor, dasharray]  — ATRIBUIÇÃO: corte do juro = ponte Laércio/LR, não Jones literal
+const JCEN = [
+  ["Governo — PLP 299 (arcabouço, Selic 13,75%)", 0.1375, {regime_gasto:"arcabouco"}, "var(--b)", "6 4"],
+  ["Jones literal — revogar + reindustrializar (juro como está)", 0.1375, {regime_gasto:"livre", invest_pub:0.02}, "var(--prem)", "2 3"],
+  ["+ corte gradual do juro (ponte Laércio/LR)", 0.10, {regime_gasto:"livre", invest_pub:0.02}, "var(--a)", null],
+  ["Jones operacional — + âncora, topo e fricção τ", 0.10, {regra_divida:true, invest_pub:0.02, tax_rich:0.008, tau_fric:0.30}, "var(--ok)", null]
+];
+function renderJones(){
+  const runs = JCEN.map(([nome,S,kw,color,dash]) => ({nome,S,color,dash, h: simulaSFC(S, {...BASE_J, ...kw})}));
+  const serie = (key,scale) => runs.map(r => ({data:r.h.map(x=>x[key]*scale), color:r.color, dasharray:r.dash||undefined}));
+  const seriePIB = () => runs.map(r => ({data:r.h.map(x=>100*x.Y/r.h[0].Y), color:r.color, dasharray:r.dash||undefined}));
+  $("#jonesCharts").replaceChildren(
+    cardChart("Dívida bruta (% do PIB)", chart(serie("b",100),{height:180,unit:"%",years:anosJ})),
+    cardChart("Câmbio (R$/US$)", chart(serie("cambio",1),{height:180,years:anosJ})),
+    cardChart("Gasto social (% do PIB)", chart(serie("gsy",100),{height:180,unit:"%",years:anosJ})),
+    cardChart("PIB (índice, 2026=100)", chart(seriePIB(),{height:180,years:anosJ}))
+  );
+  const cols=["","Selic","Dívida 2038 (% PIB)","Câmbio 2038 (R$/US$)","Gasto 2038 (% PIB)","PIB 2038 (2026=100)"];
+  const row=r=>{ const f=r.h[r.h.length-1]; return el("tr",{},[
+    el("td",{textContent:r.nome}), el("td",{textContent:nf(r.S*100,2)+"%"}),
+    el("td",{textContent:nf(f.b*100,1)}), el("td",{textContent:nf(f.cambio,2)}),
+    el("td",{textContent:nf(f.gsy*100,1)}), el("td",{textContent:nf(100*f.Y/r.h[0].Y,1)})]); };
+  $("#jonesTable").replaceChildren(
+    el("thead",{},[el("tr",{},cols.map(h=>el("th",{textContent:h})))]),
+    el("tbody",{}, runs.map(row))
+  );
+}
+
+// --- URL do Motor 2 ---
+function gravarURLM2(){
+  const q=new URLSearchParams(); q.set("t","m2");
+  Object.keys(M2_DEFAULT).forEach(k=>q.set(k,(+M2[k]).toString()));
+  history.replaceState(null,"","#"+q.toString());
+}
+
+// --- utilitários ---
+$("#copyLink").addEventListener("click",async()=>{
+  gravarURL();
+  try{ await navigator.clipboard.writeText(location.href); $("#copyLink").textContent="✓ Link copiado"; }
+  catch{ $("#copyLink").textContent="Copie da barra de endereço"; }
+  setTimeout(()=>$("#copyLink").textContent="🔗 Copiar link deste cenário",1800);
+});
+$("#resetBtn").addEventListener("click",()=>aplicarEscola("ortodoxia"));
+$("#playBtn").addEventListener("click",play);
+$("#m2reset").addEventListener("click",()=>{ M2={...M2_DEFAULT}; sincronizarM2(); renderM2(); gravarURLM2(); });
+$("#m2copy").addEventListener("click",async()=>{
+  gravarURLM2();
+  try{ await navigator.clipboard.writeText(location.href); $("#m2copy").textContent="✓ Link copiado"; }
+  catch{ $("#m2copy").textContent="Copie da barra de endereço"; }
+  setTimeout(()=>$("#m2copy").textContent="🔗 Copiar link deste cenário",1800);
+});
+$("#toVeredito").addEventListener("click",e=>{ e.preventDefault(); document.querySelector('.tab[data-panel="veredito"]').click(); window.scrollTo(0,0); });
+$("#toVeredito2").addEventListener("click",e=>{ e.preventDefault(); document.querySelector('.tab[data-panel="veredito"]').click(); window.scrollTo(0,0); });
+$("#toVeredito3").addEventListener("click",e=>{ e.preventDefault(); document.querySelector('.tab[data-panel="veredito"]').click(); window.scrollTo(0,0); });
+$("#toReind").addEventListener("click",e=>{ e.preventDefault(); document.querySelector('.tab[data-panel="reind"]').click(); window.scrollTo(0,0); });
+$("#reindSlider").addEventListener("input",e=>{ REIND.invest=parseFloat(e.target.value); $("#reindOut").textContent=nf(REIND.invest,1)+"%"; renderReind(); });
+$("#reindSelicSlider").addEventListener("input",e=>{ REIND.selic=parseFloat(e.target.value); $("#reindSelicOut").textContent=nf(REIND.selic,2)+"%"; renderReind(); });
+
+// --- boot ---
+lerURL();
+montarTabs(); montarChips(); montarControles(); montarLadder();
+montarM2Controles(); sincronizarM2(); renderM2(); renderBif(); renderProposta(); renderReind(); renderJones(); renderSix();
+sincronizarSliders(); marcarChips(); render();
+if(pendingTab) document.querySelector('.tab[data-panel="'+pendingTab+'"]').click();
+})();
+</script>
+<script>
+/* ===== 7ª lente: modelo neo-Fisherian (FTPL aberto) de Dejanir Silva (2026) =====
+   Port verbatim da função solvePath()/solve() do explorer do autor
+   (dejanirsilva.github.io/neofisherian_adventures). Paridade com o port Python
+   dejanir_model.py verificada até a casa decimal. */
+(function(){
+  const DEFAULTS={inertia:0.0591101286411708,slope:1,sale:0,duration:4,cuts:4,short:.3342,nominal:.3801,reserves:.4038,risk:0,spend:0,swap:0};
+  function solvePath(p,T=180,announced=null,terminal=null){
+    if(p.short<0||p.nominal<0||p.short+p.nominal>1+1e-10)throw Error("As parcelas da dívida (pós + prefixada) não podem passar de 100%.");
+    const Rf=1.01**.25,R=Rf*Math.exp(.06/4),b=1/R,h=Rf/R,g=.04641,H=1.325,
+      alpha=.25,L=alpha/(1-alpha),zeta=.02, nr=.4398,tr=.041,
+      k=.0172874121512447/(1-.3087)*p.slope, n=1-1/7.81, j=1-1/29.57,
+      indexed=1-p.short-p.nominal, planCut=Math.log(1.075/1.1375)/4, cut=terminal??planCut,
+      rate=announced??Array.from({length:T},(_,t)=>planCut*Math.min((t+1)/p.cuts,1)),
+      f=rate.map((_,t)=>t<p.duration?-p.sale/(100*tr):0),
+      size=6*T, rows=[];
+    const row=()=>new Float64Array(size+1);
+    function push(r,value){r[size]=value;rows.push(r)}
+    for(const i of [4,5]){const r=row();r[i]=1;push(r,i===5?-cut:0)}
+    const r0=row();r0[3]=1;r0[1]=1;
+    for(const [i,v] of [[0,1],[1,-1],[2,1],[4,-1]])r0[i]-=R*H*v;
+    push(r0,R*H*cut);
+    const pc=[(-L-k)*(1-alpha)/(1-p.inertia), L*(1-alpha)/(1-p.inertia),
+      (1-alpha)/(1-p.inertia),alpha*g, L*(1-alpha)/(1-p.inertia),-p.inertia*(1-alpha)/(1-p.inertia)];
+    const A=[[1-zeta-pc[0],-pc[1],-pc[2],-pc[3],-pc[4],-pc[5]],
+      [-zeta,1,0,-g,0,0],pc,[zeta,-1,0,R*(1+H*g)+g,0,0],
+      [1,-1,0,0,0,0],[-L,L,1,0,L,0]];
+    const B=[1-alpha,0,alpha,0,0,0], F=[alpha*g,g,-alpha*g,Rf-R-(1+R*H)*g,0,0];
+    for(let t=0;t<T-1;t++)for(let i=0;i<6;i++){
+      const r=row();r[6*(t+1)+i]=1;
+      for(let q=0;q<6;q++)r[6*t+q]=-A[i][q];
+      push(r,B[i]*(rate[t]-cut)+F[i]*f[t]);
+    }
+    for(const i of [0,2]){const r=row();r[6*(T-1)+i]=1;push(r,0)}
+    const fiscal=row(); let constant=-R*(1+p.reserves)*(p.short+p.nominal)*cut;
+    fiscal[2]=-R*(1+p.reserves)*(p.short+p.nominal);
+    fiscal[0]=-Rf*p.reserves;fiscal[1]=Rf*p.reserves;
+    const fullWeight=1+(1-h)*p.reserves, realWeight=(1-p.spend)*fullWeight,
+      reserveCarry=(h-1)*tr/nr-h*p.reserves*g;
+    for(let t=0;t<T;t++){
+      const nominalPrice=-R*(1+p.reserves)*p.nominal*n*n**t;
+      const realCoeff=-R*(1+p.reserves)*indexed*j*j**t+b**t*realWeight;
+      constant+=nominalPrice*rate[t]+realCoeff*(rate[t]-cut)-b**t*reserveCarry*f[t];
+      if(t+1<T)fiscal[6*(t+1)+2]-=realCoeff;
+      fiscal[6*t+3]-=b**t*h*p.reserves*g;
+      fiscal[6*t]-=b**t*(h-1)*p.reserves;
+      fiscal[6*t+1]+=b**t*(h-1)*p.reserves;
+    }
+    constant-=R*(1+p.reserves)*p.nominal*n*n**T*cut/(1-n);
+    push(fiscal,-constant);
+    for(let i=0;i<size;i++){
+      let pivot=i;
+      for(let q=i+1;q<size;q++)if(Math.abs(rows[q][i])>Math.abs(rows[pivot][i]))pivot=q;
+      if(Math.abs(rows[pivot][i])<1e-12)throw Error("O modelo fica singular nesse cenário.");
+      [rows[i],rows[pivot]]=[rows[pivot],rows[i]];
+      const main=rows[i];
+      for(let q=i+1;q<size;q++){
+        const other=rows[q]; if(!other[i])continue;
+        const scale=other[i]/main[i]; other[i]=0;
+        for(let l=i+1;l<=size;l++)other[l]-=scale*main[l];
+      }
+    }
+    const v=new Float64Array(size);
+    for(let i=size-1;i>=0;i--){
+      let sum=rows[i][size];for(let q=i+1;q<size;q++)sum-=rows[i][q]*v[q];
+      v[i]=sum/rows[i][i];
+    }
+    const result=[];let debt=0;
+    for(let t=T-1;t>=0;t--){
+      const q=v[6*t]-v[6*t+1], a=v[6*t+3], real=rate[t]-cut-(t+1<T?v[6*(t+1)+2]:0);
+      debt=b*debt-realWeight*real+h*p.reserves*g*a+(h-1)*p.reserves*q+reserveCarry*f[t];
+      result[t]={inflation:100*Math.expm1(Math.log(1.1375)-4*Math.log(R)+4*(v[6*t+2]+cut)),
+        real:100*Math.expm1(4*(Math.log(R)+real)),fx:100*q,debt:100*(debt-p.spend*fullWeight*real),
+        selic:100*Math.expm1(Math.log(1.1375)+4*rate[t]),reserve:100*(nr*p.reserves+tr*f[t])};
+    }
+    return result.slice(0,25);
+  }
+  function debtMix(s){return {short:s.short+s.swap/100,nominal:s.nominal-s.swap/100};}
+  function solve(settings){
+    const p={...settings,...debtMix(settings)};
+    if(!p.risk)return solvePath(p);
+    const T=180, low=Math.log(1.075/1.1375)/4, high=Math.log(1.175/1.1375)/4;
+    const survival=1-p.risk, start=p.cuts;
+    const expected=Array.from({length:T},(_,t)=>t<start?low*(t+1)/start:high+(low-high)*survival**(t-start+1));
+    const path=solvePath(p,T,expected,high);
+    const revision=Array.from({length:T},(_,t)=>p.risk*(low-high)*survival**t);
+    const news=solvePath({...p,sale:0},T,revision,0);
+    const i0=1.1375/(1.01*Math.exp(.06)), r0=1.01*Math.exp(.06);
+    for(let t=0;t<path.length;t++){
+      const r=path[t];
+      for(const [key,base] of [["inflation",i0],["real",r0]]){
+        let change=0;for(let j=start;j<=t;j++)change+=Math.log((1+news[t-j][key]/100)/base);
+        r[key]=100*Math.expm1(Math.log1p(r[key]/100)+change);
+      }
+      for(const key of ["fx","debt"])for(let j=start;j<=t;j++)r[key]+=news[t-j][key];
+    }
+    return path;
+  }
+  const PRE_PLANO=100*(1.1375/(1.01*Math.exp(.06))-1);   // inflação de regime (~6,1%)
+  const BENCH=solve(DEFAULTS);
+
+  function chart(mountId, scen, bench, key){
+    const mount=document.getElementById(mountId); if(!mount)return;
+    const W=620,H=232,L=46,Rm=12,Tm=12,Bm=24,xs=25;
+    const series=[{d:bench.map(r=>r[key]),c:"var(--b)",dash:"6 4"},{d:scen.map(r=>r[key]),c:"var(--a)"}];
+    let lo=Infinity,hi=-Infinity;
+    series.forEach(s=>s.d.forEach(v=>{if(isFinite(v)){lo=Math.min(lo,v);hi=Math.max(hi,v);}}));
+    if(!isFinite(lo)){lo=0;hi=1;} if(hi-lo<1e-6){hi=lo+1;lo-=1;}
+    const padv=(hi-lo)*.08; lo-=padv; hi+=padv;
+    let raw=(hi-lo)/4, mag=10**Math.floor(Math.log10(raw)), ratio=raw/mag, step=mag*(ratio>5?10:ratio>2?5:ratio>1?2:1);
+    lo=Math.floor(lo/step)*step; hi=Math.ceil(hi/step)*step;
+    const x=t=>L+(W-L-Rm)*t/(xs-1), y=v=>H-Bm-(H-Bm-Tm)*(v-lo)/(hi-lo);
+    let s='';
+    for(let v=lo;v<=hi+1e-9;v+=step){
+      const yy=y(v).toFixed(1);
+      s+=`<line x1="${L}" y1="${yy}" x2="${W-Rm}" y2="${yy}" style="stroke:var(--line)"/>`;
+      s+=`<text x="${L-6}" y="${(+yy+3).toFixed(1)}" text-anchor="end" style="font:10px var(--mono);fill:var(--ink2)">${+v.toFixed(2)}</text>`;
+    }
+    for(const t of [0,4,8,12,16,20,24])
+      s+=`<text x="${x(t)}" y="${H-Bm+13}" text-anchor="middle" style="font:10px var(--mono);fill:var(--ink2)">${t}</text>`;
+    s+=`<line x1="${L}" y1="${y(0).toFixed(1)}" x2="${W-Rm}" y2="${y(0).toFixed(1)}" style="stroke:var(--ink2);opacity:.35"/>`;
+    for(const sr of series){
+      const d=sr.d.map((v,t)=>`${t?'L':'M'}${x(t).toFixed(1)} ${y(v).toFixed(1)}`).join(' ');
+      s+=`<path d="${d}" style="fill:none;stroke:${sr.c};stroke-width:2${sr.dash?';stroke-dasharray:'+sr.dash:''}"/>`;
+    }
+    mount.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" preserveAspectRatio="xMidYMid meet" style="display:block">${s}</svg>`;
+  }
+
+  const $=id=>document.getElementById(id);
+  function readSettings(){
+    const short=(+$("nf_short").value)/100, nominal=(+$("nf_nominal").value)/100;
+    return {settings:{...DEFAULTS,
+      cuts:+$("nf_cuts").value, sale:+$("nf_sale").value, risk:+$("nf_risk").value,
+      spend:+$("nf_spend").value, short, nominal}, short, nominal};
+  }
+  function fmt(x,n=2){return (x>=0?'':'')+x.toFixed(n);}
+  function render(){
+    const {settings,short,nominal}=readSettings();
+    const idx=1-short-nominal;
+    $("nf_cuts_v").textContent=settings.cuts+" trim.";
+    $("nf_sale_v").textContent=settings.sale.toFixed(2)+"% do PIB";
+    $("nf_risk_v").textContent=Math.round(settings.risk*100)+"%/trim.";
+    $("nf_spend_v").textContent=Math.round(settings.spend*100)+"%";
+    $("nf_short_v").textContent=Math.round(short*100)+"%";
+    $("nf_nominal_v").textContent=Math.round(nominal*100)+"%  (indexada "+Math.round(Math.max(0,idx)*100)+"%)";
+    const st=$("nfStatus");
+    if(short+nominal>1+1e-9){ st.style.borderColor="var(--frag)";
+      st.innerHTML="<b>Composição inválida:</b> pós ("+Math.round(short*100)+"%) + prefixada ("+Math.round(nominal*100)+"%) passa de 100%. A parcela indexada (NTN-B) é o resto — reduza um dos dois.";
+      return;
+    }
+    let scen; try{ scen=solve(settings); }catch(e){ st.style.borderColor="var(--frag)"; st.innerHTML="<b>Cenário sem solução:</b> "+e.message; return; }
+    chart("nfInfl",scen,BENCH,"inflation"); chart("nfReal",scen,BENCH,"real");
+    chart("nfFx",scen,BENCH,"fx"); chart("nfDebt",scen,BENCH,"debt");
+    const i0=scen[0].inflation, iLP=scen[24].inflation, r0=scen[0].real, rLP=scen[24].real, surto=i0-PRE_PLANO;
+    st.style.borderColor="var(--accent)";
+    st.innerHTML="<b>Inflação de impacto</b> "+fmt(i0)+"% (surto "+(surto>=0?'+':'')+fmt(surto)+"pp vs regime "+PRE_PLANO.toFixed(1)+"%) · "+
+      "<b>longo prazo</b> "+fmt(iLP)+"% · <b>juro real</b> "+fmt(r0)+"% → "+fmt(rLP)+"% (volta ao pré-plano: o corte nominal não baixa o juro real estrutural).";
+  }
+  ["nf_cuts","nf_sale","nf_risk","nf_spend","nf_short","nf_nominal"].forEach(id=>{
+    const el=$(id); if(el) el.addEventListener("input",render);
+  });
+  const toVer=$("toVereditoNF"); if(toVer) toVer.addEventListener("click",e=>{e.preventDefault();document.querySelector('.tab[data-panel="veredito"]').click();window.scrollTo(0,0);});
+  const toBif=$("toBif"); if(toBif) toBif.addEventListener("click",e=>{e.preventDefault();document.querySelector('.tab[data-panel="bifurcacao"]').click();window.scrollTo(0,0);});
+  render();
+})();
+</script>
+</body>
+</html>

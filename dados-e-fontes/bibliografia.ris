@@ -1,0 +1,798 @@
+TY  - BLOG
+AU  - Lara Resende, André
+TI  - Eu Acuso: uma proposta para eliminar os juros absurdos
+PY  - 2026
+DA  - 2026/09/25
+UR  - https://andrelararesende.substack.com/p/eu-acuso-uma-proposta-para-eliminar
+PB  - Substack
+KW  - eixo:00-LR-nucleo
+KW  - status:fonte-primaria
+KW  - tese-central
+N1  - Uso: o texto-âncora com que o artigo dialoga. Diagnóstico certo (juro é o rombo), proposta incompleta (câmbio). Limite: terapia disputada (tabelar Selic). Rel: compromissadas; dominancia-fiscal; cambio-fluxos.
+ER  -
+
+TY  - BLOG
+AU  - Oreiro, José Luís
+TI  - A proposta de Lara Resende para tabelar a Selic: diagnóstico correto, terapia ingênua, o risco de um novo 2012
+PY  - 2026
+DA  - 2026/11/02
+UR  - https://jlcoreiro.wordpress.com/2026/11/02/a-proposta-de-lara-resende-para-tabelar-a-selic-diagnostico-correto-terapia-ingenua-o-risco-de-um-novo-2012-e-a-descoberta-da-polvora/
+PB  - Blog do Oreiro
+KW  - eixo:00-LR-nucleo
+KW  - contraponto-serio
+KW  - status:fonte-primaria
+N1  - Uso: a crítica honesta ao LR que o artigo absorve (separar diagnóstico de terapia). Rel: LR-Eu-Acuso; dominancia-fiscal.
+ER  -
+
+TY  - BLOG
+AU  - Freire, Alberto
+TI  - "Eu Acuso": entre a possibilidade teórica e a ambiguidade empírica
+PY  - 2026
+UR  - https://alberto7freire.substack.com/p/eu-acuso-teoria-fiscal-lara-resende
+PB  - Substack
+KW  - eixo:00-LR-nucleo
+KW  - contraponto-serio
+N1  - Uso: crítica à âncora de dívida do LR como desenho institucional incompleto. Rel: regras-fiscais.
+ER  -
+
+TY  - RPRT
+AU  - Instituição Fiscal Independente
+TI  - As operações compromissadas do Banco Central (Estudo Especial nº 03/2017)
+PY  - 2017
+UR  - https://www12.senado.leg.br/ifi/pdf/estudo-especial-no-03-as-operacoes-compromissadas-do-banco-central-out-2017
+PB  - IFI/Senado Federal
+KW  - eixo:01-compromissadas
+KW  - botao:r
+KW  - ponto-cego
+KW  - status:dado-factual
+N1  - Uso: base técnica do "juro invisível" (~R$1,1 tri remunerado à Selic no BC). Limite: drenagem é tecnicamente necessária (excesso estrutural de liquidez). Rel: LR-Eu-Acuso; DVR-reclassificacao.
+ER  -
+
+TY  - RPRT
+AU  - Banco Central do Brasil
+TI  - Resenha de Mercado Aberto (semana 17-21/08/2026)
+PY  - 2026
+UR  - https://www.bcb.gov.br/content/publicacoes/resenhamercadoaberto/W20260817-20260821.pdf
+PB  - BCB
+KW  - eixo:01-compromissadas
+KW  - botao:r
+KW  - status:dado-factual
+N1  - Uso: volumes de compromissadas (~R$926 bi/dia) + DVR (~R$212 bi/dia). Rel: IFI-compromissadas.
+ER  -
+
+TY  - BLOG
+AU  - Costa, Fernando Nogueira da
+TI  - Custo das operações compromissadas do Banco Central (auditoria TCU)
+PY  - 2023
+DA  - 2023/02/22
+UR  - https://fernandonogueiracosta.wordpress.com/2023/02/22/custo-das-operacoes-compromissadas-do-banco-central-do-brasil-para-enxugar-liquidez-e-carregar-titulos-de-divida-publica/
+KW  - eixo:01-compromissadas
+KW  - botao:r
+KW  - status:dado-factual
+N1  - Uso: R$133 bi de desembolso só com compromissadas em 2022 (Selic 13,75%); TCU achou alto custo, não irregularidade. Rel: IFI-compromissadas.
+ER  -
+
+TY  - ELEC
+AU  - Banco Central do Brasil
+TI  - DBGG - metodologia utilizada a partir de 2008 (inclusão das compromissadas)
+UR  - https://dadosabertos.bcb.gov.br/dataset/13762-divida-bruta-do-governo-geral--pib---metodologia-utilizada-a-partir-de-2008
+PB  - BCB Dados Abertos
+KW  - eixo:01-compromissadas
+KW  - moldura
+KW  - status:dado-factual
+N1  - Uso: por que a compromissada entra na DBGG (e o DVR não) — base do truque de reclassificação. Rel: LR-Eu-Acuso.
+ER  -
+
+TY  - NEWS
+AU  - CartaCapital
+TI  - Operação descompromissada
+UR  - https://www.cartacapital.com.br/economia/operacao-descompromissada/
+PB  - CartaCapital
+KW  - eixo:01-compromissadas
+KW  - tiering
+KW  - botao:r
+N1  - Uso: tese de que política monetária e fiscal não são separáveis; tiering/remuneração em camadas. Rel: IFI-compromissadas.
+ER  -
+
+TY  - RPRT
+AU  - Hall, George J.
+AU  - Sargent, Thomas J.
+TI  - Three World Wars: Fiscal-Monetary Consequences (decomposição da dívida dos EUA 1945-1974)
+PY  - 2021
+UR  - https://people.brandeis.edu/~ghall/papers/Hall_Sargent_Three_Wars.pdf
+PB  - PNAS/NBER
+KW  - eixo:02-historia-repressao
+KW  - abre-artigo
+KW  - status:dado-factual
+N1  - Uso: superávit primário explicou só ~1/3 da queda 97%->17% do PIB; o resto foi crescimento+inflação. Derruba a premissa do ajuste. Rel: Reinhart-Sbrancia; Blanchard-rg.
+ER  -
+
+TY  - RPRT
+AU  - Reinhart, Carmen M.
+AU  - Sbrancia, M. Belen
+TI  - The Liquidation of Government Debt (IMF WP 15/7)
+PY  - 2015
+UR  - https://www.imf.org/external/pubs/ft/wp/2015/wp1507.pdf
+PB  - IMF / NBER 16893
+KW  - eixo:02-historia-repressao
+KW  - repressao-financeira
+KW  - status:dado-factual
+N1  - Uso: repressão financeira liquidou 3-4% do PIB/ano de dívida no pós-guerra; Brasil faz o inverso (subsídio ao rentista). Rel: Hall-Sargent.
+ER  -
+
+TY  - RPRT
+AU  - Blanchard, Olivier
+TI  - Costly increases when r<g (IMF WP 2024/010)
+PY  - 2024
+UR  - https://www.imf.org/-/media/Files/Publications/WP/2024/English/wpiea2024010-print-pdf.ashx
+PB  - IMF
+KW  - eixo:02-historia-repressao
+KW  - limite-honesto
+N1  - Uso: o conforto de r<g enfraquece acima de ~80-100% do PIB. Limite honesto do botão g. Rel: crescimento-denominador.
+ER  -
+
+TY  - JOUR
+AU  - Chamon, Marcos
+AU  - Garcia, Márcio
+TI  - Capital controls in Brazil: effective? (IOF 2009-2013)
+UR  - https://www.econ.puc-rio.br/mgarcia/Papers/Papers/JMF_Rev_18_11_15%20revisao%20Marina%20(1).pdf
+PB  - Journal of International Money and Finance
+KW  - eixo:03-cambio-fluxos
+KW  - botao:r
+KW  - cambio
+KW  - status:fonte-primaria
+N1  - Uso: IOF à vista (2009-10) mudou composição mas NÃO segurou o câmbio; o teste de fogo contra o LR. Rel: CEPAL-derivativos; IMF-IPF.
+ER  -
+
+TY  - RPRT
+AU  - CEPAL
+TI  - Regulação de derivativos cambiais (IOF sobre posição vendida, 2011)
+UR  - https://repositorio.cepal.org/server/api/core/bitstreams/7faeada3-09b4-48aa-98b2-34c70bb1de06/content
+PB  - CEPAL
+KW  - eixo:03-cambio-fluxos
+KW  - cambio
+KW  - compensacao
+N1  - Uso: o IOF nos DERIVATIVOS (2011) depreciou o real — o carry mora no futuro. A alavanca tau do modelo. Rel: Chamon-Garcia.
+ER  -
+
+TY  - RPRT
+AU  - International Monetary Fund
+TI  - Integrated Policy Framework - Principles (2023)
+PY  - 2023
+UR  - https://www.imf.org/-/media/files/publications/pp/2023/english/ppea2023061.pdf
+PB  - IMF
+KW  - eixo:03-cambio-fluxos
+KW  - blindagem-anti-paria
+N1  - Uso: o FMI hoje endossa controle de fluxo (CFM/MPM) preventivo — mata o "controle de capital = pária". Rel: Rey-dilema; Rodrik.
+ER  -
+
+TY  - RPRT
+AU  - Rey, Hélène
+TI  - Dilemma not Trilemma: the Global Financial Cycle and Monetary Policy Independence (NBER w21162)
+PY  - 2015
+UR  - https://www.nber.org/system/files/working_papers/w21162/w21162.pdf
+PB  - NBER
+KW  - eixo:03-cambio-fluxos
+KW  - base-teorica
+N1  - Uso: câmbio flutuante NÃO basta p/ autonomia monetária; precisa gerir a conta de capital. Rel: IMF-IPF.
+ER  -
+
+TY  - BLOG
+AU  - Sala do Led
+TI  - O real tem regime, não tem gestão (carrego das reservas ~R$125 bi/ano)
+UR  - https://saladoled.substack.com/p/o-real-tem-regime-nao-tem-gestao
+PB  - Substack
+KW  - eixo:03-cambio-fluxos
+KW  - botao:r
+KW  - gap-modelo
+N1  - Uso: o carrego das reservas = a receita do carry do estrangeiro; cortar a Selic MELHORA o quase-fiscal. Gap atual do .mky. Rel: Chamon-Garcia.
+ER  -
+
+TY  - BLOG
+AU  - Serpa, Mário
+TI  - Fiscal Dominance: Reality, Risk or Narrative?
+UR  - https://marioserpa.substack.com/p/fiscal-dominance-reality-risk-or
+PB  - Substack
+KW  - eixo:04-dominancia-premio
+KW  - experimento-central
+N1  - Uso: o Brasil ainda não está em dominância, mas a trajetória aumenta a probabilidade; o teste de regime do modelo. Rel: IBRE-curva-longa; SciELO-dominancia.
+ER  -
+
+TY  - BLOG
+AU  - IBRE/FGV
+TI  - Mudança de regime fiscal e reprecificação da curva longa no Brasil
+UR  - https://blogdoibre.fgv.br/posts/mudanca-de-regime-fiscal-e-reprecificacao-da-curva-longa-no-brasil
+PB  - Blog do IBRE
+KW  - eixo:04-dominancia-premio
+KW  - premio-de-risco
+N1  - Uso: a curva longa abriu mais por narrativa institucional que por primário corrente — o prêmio (phi) não é constante. Rel: Serpa-dominancia.
+ER  -
+
+TY  - ELEC
+AU  - Mayer Brown
+TI  - Lei nº 15.270/2025: tributação de dividendos e IRPF mínimo
+PY  - 2025
+UR  - https://www.mayerbrown.com/pt/insights/publications/2025/12/enactment-of-law-no-15270-2025
+KW  - eixo:05-tributacao-topo
+KW  - primario
+KW  - alternativa-direta
+N1  - Uso: a lei dos dividendos (IRRF 10% + IRPFM). Rel: dividendos-arrecadacao.
+ER  -
+
+TY  - NEWS
+AU  - Agência Brasil
+TI  - Receita arrecada R$ 3,1 bilhões com IR sobre dividendos (18% do previsto)
+PY  - 2026
+DA  - 2026/08
+UR  - https://agenciabrasil.ebc.com.br/economia/noticia/2026-08/receita-arrecada-r-31-bilhoes-com-ir-sobre-dividendos
+KW  - eixo:05-tributacao-topo
+KW  - virada-retorica
+KW  - status:dado-factual
+N1  - Uso: "não arrecadou porque foi desenhada para não arrecadar" (janela até 2028) — má calibração deliberada, não impossibilidade. Rel: Lei-15270.
+ER  -
+
+TY  - ELEC
+AU  - Câmara dos Deputados
+TI  - PL 4.258/2023: fim da dedução de Juros sobre Capital Próprio (JCP)
+PY  - 2023
+UR  - https://www.camara.leg.br/noticias/994251-PROJETO-DO-GOVERNO-ACABA-COM-DEDUCAO-DE-JUROS-SOBRE-CAPITAL-PROPRIO-A-PARTIR-DE-2024
+KW  - eixo:05-tributacao-topo
+KW  - primario
+KW  - alternativa-direta
+N1  - Uso: o próprio governo estimou +R$10,5 bi/ano com o fim do JCP. Rel: gastos-tributarios.
+ER  -
+
+TY  - NEWS
+AU  - EAI Invest
+TI  - STF reconhece omissão e fixa prazo de 24 meses para regulamentar o IGF
+PY  - 2025
+UR  - https://eai-invest.com.br/news/stf-retoma-julgamento-de-imposto-para-grandes-fortunas-nesta-4a-feira/
+KW  - eixo:05-tributacao-topo
+KW  - alternativa-direta
+KW  - fato-novo
+N1  - Uso: o IGF (Art.153 VII) saiu de "bandeira eterna" para "prazo correndo". Rel: PLP-5-2026; Sindifisco-IGF.
+ER  -
+
+TY  - ELEC
+AU  - Câmara dos Deputados
+TI  - PLP 5/2026: IGF progressivo de 1% a 3% sobre patrimônio acima de R$10 mi
+PY  - 2026
+UR  - https://www.camara.leg.br/proposicoesWeb/prop_mostrarintegra?codteor=3077463&filename=PLP+5%2F2026
+KW  - eixo:05-tributacao-topo
+KW  - alternativa-direta
+N1  - Uso: a proposta concreta de IGF em tramitação. Rel: IGF-STF.
+ER  -
+
+TY  - ELEC
+AU  - Governo do Brasil (G20)
+TI  - Proposta brasileira no G20 para taxar super-ricos (2% bilionários, Zucman)
+PY  - 2024
+UR  - https://www.gov.br/g20/en/news/at-the-g20-brasils-proposal-to-tax-the-super-rich-may-raise-up-to-250-billion-dollars-a-year
+PB  - gov.br
+KW  - eixo:05-tributacao-topo
+KW  - alternativa-direta
+KW  - coerencia-brasil
+N1  - Uso: bandeira do próprio Brasil (Haddad/Zucman); cobrar coerência "defendemos lá fora, não aplicamos aqui". Rel: IGF-STF.
+ER  -
+
+TY  - RPRT
+AU  - Senado Federal
+TI  - Gastos tributários no PLOA 2026 (R$544,5 bi em 2025; R$612,8 bi projetados 2026)
+PY  - 2026
+UR  - https://www12.senado.leg.br/orcamento/documentos/estudos/tipos-de-estudos/notas-tecnicas-e-informativos/notatecnicaconjunta_ploa-2026_.pdf
+KW  - eixo:05-tributacao-topo
+KW  - alternativa-direta
+KW  - status:dado-factual
+N1  - Uso: o reservatório de renúncias; cortar Perse/revisões (NÃO Simples/ZFM). Rel: JCP.
+ER  -
+
+TY  - NEWS
+AU  - CNN Brasil
+TI  - Receita formaliza novo regime de CSLL para bancos (15% -> 20%, LC 224/2025)
+PY  - 2025
+UR  - https://www.cnnbrasil.com.br/economia/money/macroeconomia/receita-formaliza-novo-regime-de-csll-para-instituicoes-financeiras-a-partir-de-abril/
+KW  - eixo:05-tributacao-topo
+KW  - alternativa-direta
+N1  - Uso: prova de que o Congresso topa tributar lucro extraordinário; a Selic que infla juros infla o lucro bancário. Rel: dividendos-arrecadacao.
+ER  -
+
+TY  - RPRT
+AU  - IPEA
+TI  - Mudanças de regime e multiplicadores fiscais no Brasil (investimento 1,4-2,2)
+UR  - https://portalantigo.ipea.gov.br/agencia/images/stories/PDFs/ppe/170925_ppe_v47_n2_art01.pdf
+PB  - IPEA
+KW  - eixo:06-crescimento-g
+KW  - botao:g
+KW  - status:dado-factual
+N1  - Uso: investimento público tem multiplicador >1 (consumo/transferência <=1). Ajuste pela composição. Rel: Sanches-Carvalho.
+ER  -
+
+TY  - RPRT
+AU  - Sanches, Marina
+AU  - Carvalho, Laura
+TI  - Multiplicadores fiscais e a recessão brasileira 2015-16 (USP FEA WP35)
+UR  - https://repec.eae.fea.usp.br//documentos/Sanches_Carvalho_35WP.pdf
+PB  - USP/FEA
+KW  - eixo:06-crescimento-g
+KW  - botao:g
+N1  - Uso: a contração fiscal de alto multiplicador aprofundou a recessão. Rel: IPEA-multiplicadores.
+ER  -
+
+TY  - RPRT
+AU  - ETCO
+AU  - McKinsey
+TI  - Barreiras ao crescimento: informalidade e produtividade
+UR  - https://www.etco.org.br/user_file/ETCO_McKinsey_Diag_Informalidade.pdf
+KW  - eixo:06-crescimento-g
+KW  - botao:g
+KW  - botao:primario
+N1  - Uso: formalização move os DOIS botões (produtividade + base tributária). Rel: reforma-tributaria.
+ER  -
+
+TY  - RPRT
+AU  - IPEA
+TI  - Inserção da Coreia do Sul na cadeia automobilística global (conteúdo local 21%->60%)
+UR  - https://repositorio.ipea.gov.br/server/api/core/bitstreams/37fee4b3-7dba-489f-9e17-0df3e4e57b4c/content
+PB  - IPEA
+KW  - eixo:06-crescimento-g
+KW  - portos-reindustrializacao
+KW  - como-fazer-certo
+N1  - Uso: transferência de tecnologia condicionada à ESCADA de conteúdo local (não montagem perpétua). Rel: NBER-quid-pro-quo; Georgetown-TRIMs.
+ER  -
+
+TY  - RPRT
+AU  - National Bureau of Economic Research
+TI  - Quid Pro Quo: FDI, joint ventures e transferência de tecnologia (China, w27644)
+UR  - https://www.nber.org/system/files/working_papers/w27644/w27644.pdf
+PB  - NBER
+KW  - eixo:06-crescimento-g
+KW  - portos-reindustrializacao
+N1  - Uso: acesso a mercado por JV + 40% conteúdo local + transferência efetiva. Rel: IPEA-Coreia.
+ER  -
+
+TY  - RPRT
+AU  - PUC-Rio
+TI  - O Fundo Social do Pré-Sal como mecanismo (por que falhou vs Noruega)
+UR  - https://www.maxwell.vrac.puc-rio.br/55163/55163.PDF
+KW  - eixo:06-crescimento-g
+KW  - fundo-soberano
+KW  - limite-honesto
+N1  - Uso: o Fundo Social BR virou caixa (sem trava de principal); redesenhar no modelo norueguês. Rel: GPFG-Noruega.
+ER  -
+
+TY  - RPRT
+AU  - BNDES
+TI  - O novo Fundo Clima (funding via título verde, fora do primário)
+UR  - https://web.bndes.gov.br/bib/jspui/bitstream/1408/27787/1/PRArt_216523_O%20novo%20Fundo%20Clima.pdf
+PB  - BNDES
+KW  - eixo:06-crescimento-g
+KW  - botao:g
+KW  - credito-dirigido
+N1  - Uso: crédito direcionado verde alavanca investimento sem passar pela despesa primária. Rel: minerais-criticos.
+ER  -
+
+TY  - NEWS
+AU  - Senado Federal
+TI  - Sancionada Política Nacional de Minerais Críticos e Estratégicos (Lei 15.506/2026)
+PY  - 2026
+DA  - 2026/09/17
+UR  - https://www12.senado.leg.br/noticias/materias/2026/09/17/sancionada-politica-nacional-de-minerais-criticos-e-estrategicos
+KW  - eixo:06-crescimento-g
+KW  - botao:g
+N1  - Uso: agregação de valor em território nacional; BNDES+Finep até R$5 bi. Rel: BNDES-Fundo-Clima.
+ER  -
+
+TY  - STAT
+TI  - Regulation (EU) 2024/1263: âncora de dívida com net expenditure path plurianual
+PY  - 2024
+UR  - https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=OJ%3AL_202401263
+PB  - União Europeia
+KW  - eixo:07-regras-fiscais
+KW  - moldura
+KW  - ancora-de-divida
+N1  - Uso: o modelo de âncora de dívida com banda prudencial (a alternativa ao teto de despesa). Rel: Tesouro-arcabouco-sistemico.
+ER  -
+
+TY  - RPRT
+AU  - Secretaria do Tesouro Nacional
+TI  - Regras Fiscais: arcabouço sistêmico para o caso brasileiro (âncora de dívida + bandas)
+UR  - http://sisweb.tesouro.gov.br/apex/cosis/monografias/obtem_monografia/3005
+PB  - Tesouro Nacional
+KW  - eixo:07-regras-fiscais
+KW  - moldura
+KW  - ancora-de-divida
+N1  - Uso: proposta nacional de regra de despesa ancorada em dívida com bandas prudenciais. Rel: EU-2024-1263.
+ER  -
+
+TY  - RPRT
+AU  - Instituição Fiscal Independente
+TI  - Relatório de Acompanhamento Fiscal nº 117 (out/2026)
+PY  - 2026
+UR  - https://www12.senado.leg.br/ifi/pdf/raf117_out2026.pdf
+PB  - IFI/Senado
+KW  - eixo:07-regras-fiscais
+KW  - status:dado-factual
+N1  - Uso: superávit estabilizador sobe de 2,1% para 2,9% do PIB com juro neutro 6,1% — prova de que r domina o esforço. Rel: conselho-fiscal.
+ER  -
+
+TY  - STAT
+TI  - Lei Complementar 200/2023 (arcabouço fiscal)
+PY  - 2023
+UR  - https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp200.htm
+PB  - Planalto
+KW  - eixo:07-regras-fiscais
+KW  - moldura
+KW  - caminho-juridico
+N1  - Uso: o arcabouço é LC — trocar a mecânica é LC (sem PEC). Rel: EC-95; precatorios.
+ER  -
+
+TY  - STAT
+TI  - Emenda Constitucional 95/2016 (teto de gastos Temer)
+PY  - 2016
+UR  - https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc95.htm
+PB  - Planalto
+KW  - eixo:07-regras-fiscais
+KW  - moldura
+KW  - caminho-juridico
+N1  - Uso: desindexou os pisos de saúde/educação da receita; restaurá-los exige PEC (devolver ao social o que a EC95 tirou). Rel: LC-200.
+ER  -
+
+TY  - RPRT
+AU  - Richmond Fed
+TI  - The Debt Brake: Unsafe at Any Speed? (crítica ao Schuldenbremse alemão)
+PY  - 2025
+UR  - https://www.richmondfed.org/publications/research/economic_brief/2025/eb_25-22
+KW  - eixo:07-regras-fiscais
+KW  - limite-honesto
+N1  - Uso: âncora rígida = freio ao investimento (pontes caindo). Argumento pela cláusula anticíclica/golden rule. Rel: Bofinger.
+ER  -
+
+TY  - NEWS
+AU  - Gazeta do Povo
+TI  - Senado vota PEC que retira precatórios da regra fiscal
+UR  - https://www.gazetadopovo.com.br/economia/senado-vota-pec-que-retira-precatorios-da-regra-fiscal-reduz-juros-e-permite-calote/
+KW  - eixo:07-regras-fiscais
+KW  - precatorios
+N1  - Uso: tirar precatório do limite de despesa (faz sentido) vs calote (repudiar) — separar as duas coisas. Rel: LC-200.
+ER  -
+
+TY  - BOOK
+AU  - Marx, Karl
+TI  - O Capital, Livro I - A assim chamada acumulação primitiva (a dívida pública)
+PY  - 1867
+UR  - https://www.marxists.org/archive/marx/works/1867-c1/ch31.htm
+KW  - eixo:08-camada-estrutural
+KW  - status:fonte-primaria
+KW  - camada-profunda
+N1  - Uso: §4 - a dívida pública como "alavanca da acumulação primitiva"; o fecho tributário regressivo. Ver FONTES-PRIMARIAS-CAMADAS.md 4.1. Rel: Manifesto; agro-BB.
+ER  -
+
+TY  - BOOK
+AU  - Marx, Karl
+TI  - O Capital, Livro III - Capital portador de juros e capital fictício (Seção V, caps. 23 e 29)
+PY  - 1894
+UR  - https://www.marxists.org/archive/marx/works/1894-c3/ch29.htm
+KW  - eixo:08-camada-estrutural
+KW  - status:fonte-primaria
+KW  - camada-profunda
+N1  - Uso: §4 - a dívida do Estado como "capital ilusório, fictício"; o rentista sem função. Rel: Keynes-eutanasia.
+ER  -
+
+TY  - BOOK
+AU  - Marx, Karl
+AU  - Engels, Friedrich
+TI  - Manifesto do Partido Comunista (medida 5: centralização do crédito em banca pública)
+PY  - 1848
+UR  - https://www.marxists.org/archive/marx/works/1848/communist-manifesto/ch02.htm
+KW  - eixo:08-camada-estrutural
+KW  - status:fonte-primaria
+KW  - credito-socializado
+N1  - Uso: §4.4 - crédito socializado / banca pública (BB/Caixa/BNDES). Conecta direto com a dívida do agro no BB. Rel: agro-BB.
+ER  -
+
+TY  - BOOK
+AU  - Keynes, John Maynard
+TI  - A Teoria Geral do Emprego, do Juro e da Moeda (cap. 24: a eutanásia do rentista)
+PY  - 1936
+UR  - https://www.marxists.org/reference/subject/economics/keynes/general-theory/ch24.htm
+KW  - eixo:08-camada-estrutural
+KW  - status:fonte-primaria
+KW  - ponte-liberal
+N1  - Uso: §4.5 - "eutanásia do rentista, do investidor sem função" — a ponte de respeitabilidade liberal. Rel: Marx-Capital-III.
+ER  -
+
+TY  - BOOK
+AU  - Marini, Ruy Mauro
+TI  - Dialética da Dependência (superexploração do trabalho)
+PY  - 1973
+KW  - eixo:08-camada-estrutural
+KW  - status:verificar
+KW  - elo-externo
+N1  - Uso: §4.6 - o elo externo (dependência/câmbio). Limite: texto primário não acessível na coleta; citar pela ed. Expressão Popular. Rel: Marx-Capital-I.
+ER  -
+
+TY  - BOOK
+AU  - Kant, Immanuel
+TI  - Fundamentação da Metafísica dos Costumes (a dignidade / Würde: o que não tem preço)
+PY  - 1785
+UR  - https://www.gutenberg.org/files/5682/5682-h/5682-h.htm
+KW  - eixo:09-camada-juridica
+KW  - status:fonte-primaria
+KW  - dignidade
+N1  - Uso: §5.1 - a dignidade (AA 4:434-435) como fundamento do Art.1 III CF/88. Rel: CF-88; Pachukanis.
+ER  -
+
+TY  - BOOK
+AU  - Pachukanis, Evguiéni
+TI  - Teoria Geral do Direito e Marxismo (cap. 4: Mercadoria e Sujeito)
+PY  - 1924
+UR  - https://www.marxists.org/archive/pashukanis/1924/law/ch04.htm
+KW  - eixo:09-camada-juridica
+KW  - status:fonte-primaria
+KW  - forma-juridica
+N1  - Uso: §5.2 - a forma jurídica = forma-mercadoria; dignidade esvaziada por estrutura, não má-fé. Rel: Kant; Gramsci.
+ER  -
+
+TY  - BOOK
+AU  - Gramsci, Antonio
+TI  - Cadernos do Cárcere - Os intelectuais e a organização da cultura (hegemonia)
+UR  - https://www.marxists.org/archive/gramsci/prison_notebooks/problems/intellectuals.htm
+KW  - eixo:09-camada-juridica
+KW  - status:fonte-primaria
+KW  - hegemonia
+N1  - Uso: §5.3 - hegemonia x domínio direto via governo "jurídico". Rel: Pachukanis.
+ER  -
+
+TY  - STAT
+TI  - Constituição Federal de 1988, Art. 1º, III (a dignidade da pessoa humana)
+PY  - 1988
+KW  - eixo:09-camada-juridica
+KW  - status:fonte-primaria
+KW  - dignidade
+N1  - Uso: §5.4 - o ponto onde Kant vira direito positivo; a forma mantida, a substância esvaziada. Rel: Kant.
+ER  -
+
+TY  - VIDEO
+AU  - Jones Manoel
+TI  - André Lara Resende, rentismo e a ditadura do pensamento único no Brasil
+PY  - 2026
+DA  - 2026/11/04
+UR  - https://www.youtube.com/watch?v=mG7a6Z1s-eY
+KW  - eixo:10-campo-esquerda
+KW  - aliado-critico
+KW  - status:verificar
+N1  - Uso: leitura de esquerda do LR - elogia o diagnóstico, recusa a terapia; nota que o LR foi caricaturado ("tabelamento"). Rel: LR-Eu-Acuso. Transcrito: campo-esquerda-videos/.
+ER  -
+
+TY  - VIDEO
+AU  - Jones Manoel
+TI  - O arcabouço fiscal deveria ser revogado imediatamente (com José Kobori)
+PY  - 2026
+DA  - 2026/11/13
+UR  - https://www.youtube.com/watch?v=8oboWO_X3LI
+KW  - eixo:10-campo-esquerda
+KW  - moldura
+KW  - cambio
+KW  - status:verificar
+N1  - Uso: revogar o arcabouço; juro não resolve choque de oferta; o único canal é o câmbio (valida o §2/§3). Rel: LC-200; Chamon-Garcia.
+ER  -
+
+TY  - VIDEO
+AU  - Humberto Matos
+TI  - Avaliação da proposta de regra fiscal da bancada da esquerda radical
+PY  - 2026
+DA  - 2026/07/16
+UR  - https://www.youtube.com/watch?v=UfCG5aOas0g
+KW  - eixo:10-campo-esquerda
+KW  - aliado-central
+KW  - status:verificar
+N1  - Uso: as duas frações (primário-exportadora + rentista/capital fictício) = o §4; usa a linguagem da direita sendo socialista. Rel: Marx-Capital-III.
+ER  -
+
+TY  - VIDEO
+AU  - Humberto Matos
+TI  - A batalha dos juros: Banco Central mantém a taxa básica
+PY  - 2026
+DA  - 2026/11/09
+UR  - https://www.youtube.com/watch?v=FhlMqPvjBYA
+KW  - eixo:10-campo-esquerda
+KW  - aliado-central
+KW  - status:verificar
+N1  - Uso: baixa carga tributária != desenvolvimento; reserva de dólares (converge com ouro/Laércio). Rel: Sala-do-Led.
+ER  -
+
+TY  - VIDEO
+AU  - Mídia NINJA
+TI  - "Projeto de ajuste fiscal é um grande equívoco", diz Lindbergh
+PY  - 2026
+DA  - 2026/11/13
+UR  - https://www.youtube.com/shorts/lj9e6o25aD4
+KW  - eixo:10-campo-esquerda
+KW  - alternativa-direta
+KW  - status:verificar
+N1  - Uso: o déficit primário (saúde/educação/previdência) é um dos menores do mundo. Rel: PSOL-card.
+ER  -
+
+TY  - VIDEO
+AU  - Stroka, Bruno
+TI  - Os números do Banco do Brasil e a dívida do agro
+PY  - 2026
+DA  - 2026/11/14
+UR  - https://www.instagram.com/p/Dfs8bxvhCY4/
+PB  - Instagram
+KW  - eixo:11-agro-BB
+KW  - alternativa-direta
+KW  - status:verificar-whisper
+N1  - Uso: BB R$1,3 tri; R$403 bi agro; R$28 bi atrasados +90d; grandes do CO recusam renegociar. Transcrição por áudio (Whisper) - conferir no balanço 3T26. Rel: Manifesto-credito; agro-fontes.
+ER  -
+
+TY  - VIDEO
+AU  - Sadam, Samuel
+TI  - Calote de R$100 bi do agro vs corte de R$60 bi do governo
+PY  - 2026
+DA  - 2026/11/13
+UR  - https://www.instagram.com/p/Dfr63paOMiS/
+PB  - Instagram
+KW  - eixo:11-agro-BB
+KW  - alternativa-direta
+KW  - status:verificar-whisper
+N1  - Uso: o afeto da rua - "compromisso fiscal tirando do pobre?"; faz superávit em cima de quem tem. Rel: Stroka-agro.
+ER  -
+
+TY  - NEWS
+AU  - Agência Brasil
+TI  - Lucro do BB cai 66,5% no 3º trimestre com inadimplência do agro
+PY  - 2026
+DA  - 2026/11/11
+UR  - https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/lucro-do-bb-cai-665-no-3o-trimestre-com-inadimplencia-do-agro
+PB  - Agência Brasil / Agência O Globo
+KW  - eixo:11-agro-BB
+KW  - alternativa-direta
+KW  - status:dado-factual
+N1  - Uso: o dado duro - lucro R$1,27 bi (-66,5%); custo do crédito R$21,2 bi; inadimplência rural +90d 6,92% (vs 4,84%). Rel: Stroka-agro; BB-balanco-3T26.
+ER  -
+
+TY  - NEWS
+AU  - Forbes Agro
+TI  - Inadimplência do Agro chega a 6,92% e pressiona lucro do Banco do Brasil
+PY  - 2026
+DA  - 2026/11
+UR  - https://forbes.com.br/forbes-agro/2026/11/inadimplencia-do-agro-chega-a-692-e-pressiona-lucro-do-banco-do-brasil/
+PB  - Forbes Brasil
+KW  - eixo:11-agro-BB
+KW  - status:dado-factual
+N1  - Uso: carteira agro R$403,6 bi; médios/grandes R$266,7 bi; Pronaf inadimplência 2,95% vs rural 6,92% (o contraste de classe). Rel: agro-Agencia-Brasil.
+ER  -
+
+TY  - NEWS
+AU  - Correio do Estado
+TI  - Banco do Brasil aponta recusa de produtores em renegociar dívidas do agro
+PY  - 2026
+DA  - 2026/11/13
+UR  - https://correiodoestado.com.br/economia/2026/11/13/banco-do-brasil-aponta-recusa-de-produtores-em-renegociar-dividas-do-agro.html
+KW  - eixo:11-agro-BB
+KW  - alternativa-direta
+KW  - status:dado-factual
+N1  - Uso: Tarciana Medeiros - grandes de soja/milho/pecuária do Centro-Oeste recusaram renegociar; 31 mil inadimplentes. Rel: agro-InfoMoney.
+ER  -
+
+TY  - NEWS
+AU  - CNN Brasil
+TI  - Governo sugere renegociação de até R$ 81,6 bilhões em dívidas rurais (MP 1.376)
+PY  - 2026
+UR  - https://www.cnnbrasil.com.br/agro/governo-sugere-renegociacao-de-ate-r-816-bilhoes-em-dividas-rurais/
+PB  - CNN Brasil
+KW  - eixo:11-agro-BB
+KW  - nuance-honesta
+KW  - status:dado-factual
+N1  - Uso: distinguir o CALOTE (~R$28 bi em atraso) do universo da RENEGOCIACAO (>R$100 bi, MP 1.376, impacto fiscal <R$4 bi/ano). Nao superestimar. Rel: agro-Forbes.
+ER  -
+
+TY  - NEWS
+AU  - Banco do Brasil
+TI  - Balanço do Banco do Brasil, 3º trimestre de 2026
+PY  - 2026
+DA  - 2026/11/11
+KW  - eixo:11-agro-BB
+KW  - status:dado-factual
+N1  - Uso: fonte primária - carteira agro R$403,6 bi; lucro ajustado R$1,27 bi; inadimplência geral 6,08%, rural 6,92% (set/2026). Rel: agro-Agencia-Brasil.
+ER  -
+
+TY  - NEWS
+AU  - ICL Notícias
+TI  - Agro do calote: grandes produtores resistem a pagar; agricultura familiar dá exemplo
+PY  - 2026
+DA  - 2026/11/13
+KW  - eixo:11-agro-BB
+KW  - alternativa-direta
+N1  - Uso: médios/grandes R$266,7 bi vs Pronaf R$70,3 bi; R$27,9 bi em atraso. Localizar URL pela busca do título. Rel: Stroka-agro.
+ER  -
+
+TY  - NEWS
+AU  - InfoMoney
+TI  - BB: CEO afirma que há 31 mil devedores do agro e abre portas para renegociação
+PY  - 2026
+DA  - 2026/11/12
+UR  - https://www.infomoney.com.br/mercados/bb-ceo-afirma-que-ha-31-mil-devedores-do-agro-e-abre-portas-para-renegociacao/
+KW  - eixo:11-agro-BB
+KW  - alternativa-direta
+N1  - Uso: Tarciana Medeiros - 31 mil produtores inadimplentes; "portas abertas", mas grandes do CO recusaram. Rel: agro-Correio-do-Estado.
+ER  -
+TY  - JOUR
+AU  - Kalecki, Michał
+TI  - Political Aspects of Full Employment
+PY  - 1943
+DA  - 1943/12/01
+PB  - The Political Quarterly, v.14, n.4, p.322-330
+KW  - eixo:08-camada-estrutural
+KW  - austeridade-disciplina
+KW  - status:classico
+N1  - Uso: a raiz teórica do "por que não enfrentam o mercado" - o capital resiste ao pleno emprego porque ele tira a disciplina da demissão; a austeridade é arma de classe, não erro técnico. Jones cita no 3-Irmãos. Rel: Mattei-ordem-capital; caráter-de-classe; bateria-jones.
+ER  -
+TY  - BOOK
+AU  - Anderson, Perry
+TI  - Lineages of the Absolutist State (Linhagens do Estado Absolutista)
+PY  - 1974
+DA  - 1974
+PB  - New Left Books / Brasiliense
+KW  - eixo:08-camada-estrutural
+KW  - teoria-do-estado
+KW  - status:classico
+N1  - Uso: o lastro do argumento do Jones - a burguesia pôde ser classe economicamente dominante ANTES da política; a classe trabalhadora não pode. Por isso um governo popular dentro do capitalismo joga em campo adversário. Rel: caráter-de-classe; Marx-ideias-classe-dominante.
+ER  -
+TY  - BOOK
+AU  - Mattei, Clara E.
+TI  - The Capital Order / A ordem do capital
+PY  - 2022
+DA  - 2022
+PB  - University of Chicago Press / Boitempo (2023)
+KW  - eixo:08-camada-estrutural
+KW  - austeridade-disciplina
+KW  - status:verificar
+N1  - Uso: austeridade como disciplina de classe (forma forte=intenção, difícil de refutar; forma fraca=efeito distributivo, testável e com apoio FMI 2013). Relatório-4 T6. Rel: Kalecki-1943; austeridade-autoderrotante.
+ER  -
+TY  - BOOK
+AU  - O'Connor, James
+TI  - The Fiscal Crisis of the State (A crise fiscal do Estado)
+PY  - 1973
+DA  - 1973
+PB  - St. Martin's Press / Paz e Terra (1977)
+KW  - eixo:08-camada-estrutural
+KW  - teoria-do-estado
+KW  - status:classico
+N1  - Uso: as duas funções que se chocam - acumulação vs legitimação; o Estado preserva credibilidade junto aos credores ao custo do salário social. Explica o atrito do governo com a própria base. Relatório-4 T3. Rel: Streeck-tempo-comprado; PLP-299.
+ER  -
+TY  - BOOK
+AU  - Streeck, Wolfgang
+TI  - Buying Time / Tempo comprado
+PY  - 2013
+DA  - 2013
+PB  - Suhrkamp / Verso (2014) / Boitempo (2018)
+KW  - eixo:08-camada-estrutural
+KW  - estado-de-consolidacao
+KW  - status:verificar
+N1  - Uso: o "Estado de consolidação" responde antes aos credores que aos eleitores - dois eleitorados (os credores votam todo dia; o povo, a cada 4 anos). Encaixa o PLP 299 dias após a eleição. Relatório-4 T4. Rel: O'Connor-crise-fiscal; caráter-de-classe.
+ER  -
+TY  - VIDEO
+AU  - Jones Manoel
+TI  - Almoço dos Irmãos (Podcast 3 Irmãos) - déficit primário, juro e revolução brasileira
+PY  - 2026
+DA  - 2026/11
+UR  - https://www.youtube.com/watch?v=gH7tof7eDec
+KW  - eixo:10-campo-esquerda
+KW  - fonte-primaria
+KW  - caráter-de-classe
+KW  - status:verificar
+N1  - Uso: a resposta de "por que o governo não enfrenta o mercado" - déficit primário 0,34% (não é o problema), o alvo é o juro; teto criou a captura por emendas; austeridade (via Kalecki) serve a 3 funções (acumulação privada, disciplina do trabalho, congelar a divisão internacional do trabalho); mercado DERRUBA governo popular (inflação importada). Transcrito: Lula e governo/3 irmaos - ajuste fiscal.md. Rel: Kalecki-1943; bateria-jones; Jones-Kobori-arcabouço.
+ER  -
+TY  - VIDEO
+AU  - Lula da Silva, Luiz Inácio
+TI  - Entrevista com Pedro Sánchez em Madri (apoio à candidatura; ajuste e mercado)
+PY  - 2026
+DA  - 2026/11
+KW  - eixo:10-campo-esquerda
+KW  - fonte-primaria
+KW  - discurso-vs-proposta
+KW  - status:verificar-url
+N1  - Uso: o discurso ("não posso ser refém do mercado; nenhum ajuste que machuque o pobre/salário mínimo") confrontado com o PLP 299 (reduz pisos pela base de cálculo, inclusive excluindo petróleo) - sem lastro na proposta do governo; lastro integral de princípio na proposta do Laércio. Encarna a tese "substância contra forma". Transcrito: Lula e governo/Lula e espanha.md. Rel: PLP-299; substância-contra-forma; refém-do-mercado.
+ER  -

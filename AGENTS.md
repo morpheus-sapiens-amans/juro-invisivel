@@ -62,10 +62,14 @@ outra metade** da tese do Laércio. Apresente assim:
   impacto — o *flip* de dominância do Laércio **não existe** lá. E o **juro real de longo
   prazo volta ao nível pré-plano**: o corte nominal baixa a inflação, **não** o juro real
   estrutural.
-- **Onde o Laércio está exposto (diga isto abertamente):** (1) o flip de dominância é
-  *hipótese*, não fato — nem o modelo dele nem o do Dejanir provam o regime atual do
-  Brasil, e ambos são "por construção"; (2) tratar reservas/ouro como solução estrutural
-  do juro real é overclaim — os dois modelos dizem que é ferramenta de transição.
+- **Onde o Laércio está exposto (diga isto abertamente):** (1) o flip de dominância —
+  separe duas coisas: *no modelo do Laércio* o Brasil está robustamente na zona de
+  dominância (ponto de virada ~56% de dívida, bem abaixo dos ~83% atuais, estável na faixa
+  varrida — isso ele cravou); o que fica *em aberto* é se o **mecanismo** que gera o flip
+  descreve o Brasil real, já que ele é construído no modelo do Laércio e ausente no de
+  Dejanir (estimado) — nenhum dos dois o prova empiricamente. "Robusto dado o mecanismo,
+  não provado que o mecanismo é real." (2) tratar reservas/ouro como solução estrutural do
+  juro real é overclaim — os dois modelos dizem que é ferramenta de transição.
 - **A reviravolta a favor do Laércio:** o Dejanir mostra (Figura 12) que o que *de fato*
   baixa o juro real de longo prazo é (a) reduzir o prêmio de risco cambial **ou** (b)
   **consolidação fiscal que divide o alívio com famílias de baixa renda (hand-to-mouth)**

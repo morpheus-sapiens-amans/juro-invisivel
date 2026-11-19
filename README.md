@@ -68,8 +68,14 @@ A honestidade é o produto. Aqui está, sem maquiagem:
   aperto do piso social.
 
 **Aposta (precisa de rede, pode estar errado):**
-- Que o Brasil esteja em **dominância fiscal**, onde cortar a Selic *aprecia* o Real.
-  Isso é hipótese — nem o meu modelo nem o do Dejanir *provam* o regime atual.
+- Que o Brasil esteja de fato em **dominância fiscal** (onde cortar a Selic *aprecia* o
+  Real). Aqui é preciso separar duas coisas. **No nosso modelo isso é robusto:** quando a
+  gente varre o nível de dívida, o ponto em que o sinal do câmbio vira fica em ~56%, e o
+  Brasil está em ~83% — ou seja, bem dentro da zona de dominância, e isso se manteve em
+  toda a faixa testada. **O que *não* está provado** é que o *mecanismo* que gera essa
+  virada seja a descrição correta do Brasil: nós o construímos no modelo, e o modelo
+  **estimado** de Dejanir Silva não tem esse canal nem reproduz a virada. Então: *robusto
+  dado o mecanismo, não provado que o mecanismo é real.*
 - Que **reservas/ouro** firmem o Real estruturalmente. Pelas contas, elas são **ferramenta
   de transição**, não solução do juro real.
 

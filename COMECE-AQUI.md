@@ -3,7 +3,9 @@
 Você não precisa ser economista nem programador. Escolha seu nível.
 
 ## Nível 1 — só olhar (2 minutos, zero instalação)
-Abra o arquivo **`dashboard/index.html`** com dois cliques (ele abre no seu navegador).
+Abra **<https://morpheus-sapiens-amans.github.io/juro-invisivel/dashboard/>** no seu
+navegador — funciona até no celular. (Se você já baixou esta pasta, o mesmo painel abre
+offline: dois cliques no arquivo **`dashboard/index.html`**.)
 Passeie pelas abas e mexa nos sliders. Comece pela aba **"Bifurcação 2034"** (dois futuros
 para a dívida) e pela aba **"Neo-Fisher · Dejanir"** (o modelo de um economista de Purdue
 rodando ali, na sua tela).

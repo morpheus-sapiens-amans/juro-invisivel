@@ -1,6 +1,10 @@
 # O Juro Invisível
 ### uma conversa sensata com o ajuste fiscal brasileiro
 
+> **👉 Comece pelo site — nada para instalar, funciona no celular:**
+> ### <https://morpheus-sapiens-amans.github.io/juro-invisivel/>
+> Painel interativo, relatório em PDF e os diálogos, direto no navegador.
+
 Este repositório é uma investigação pública sobre o **juro alto e o ajuste fiscal no
 Brasil** — por que o país paga um dos maiores juros reais do mundo, quem paga a conta do
 ajuste, e o que diferentes escolas econômicas (e um paper acadêmico recente) dizem sobre
@@ -23,10 +27,12 @@ acadêmica — inclusive mostrando **onde eu posso estar errado**.
 ## Três jeitos de usar (do mais fácil ao mais fundo)
 
 ### 1. Só abrir o painel (não precisa instalar nada)
-Abra **[`dashboard/index.html`](dashboard/index.html)** no seu navegador. Mexa nos
-sliders e *veja* o juro dominar a dívida, veja o corte da Selic, veja quem paga a conta.
-São 8 abas, incluindo uma que roda o modelo do economista **Dejanir Silva (Purdue)** ao
-vivo.
+Abra **<https://morpheus-sapiens-amans.github.io/juro-invisivel/dashboard/>** em
+qualquer navegador — funciona até no celular. Mexa nos sliders e *veja* o juro dominar
+a dívida, veja o corte da Selic, veja quem paga a conta. São 8 abas, incluindo uma que
+roda o modelo do economista **Dejanir Silva (Purdue)** ao vivo. (Se você já baixou o
+repositório, o mesmo painel abre offline em
+[`dashboard/index.html`](dashboard/index.html).)
 
 ### 2. Ler os relatórios
 - **[O Juro Invisível](relatorios/O-Juro-Invisivel.pdf)** — o relatório principal (PDF).
